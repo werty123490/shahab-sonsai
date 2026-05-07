@@ -24,12 +24,12 @@
 
 html, body {
   min-height: 100%;
-  background: #050300; /* Deepest warm black */
+  background: #050300;
   font-family: 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   color: var(--white);
-  touch-action: manipulation; /* Prevent double-tap zoom */
+  touch-action: manipulation;
 }
 
 /* ── BACKGROUND ── */
@@ -38,8 +38,8 @@ html, body {
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(ellipse 55% 40% at 10% 8%,  rgba(255, 215, 0, 0.03) 0%, transparent 55%), /* Gold hint */
-    radial-gradient(ellipse 50% 45% at 90% 90%,  rgba(255, 182, 193, 0.03) 0%, transparent 55%), /* Blush hint */
+    radial-gradient(ellipse 55% 40% at 10% 8%,  rgba(255, 215, 0, 0.03) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 45% at 90% 90%,  rgba(255, 182, 193, 0.03) 0%, transparent 55%),
     radial-gradient(ellipse 70% 60% at 50% 50%,  rgba(30, 20, 15, 0.60)   0%, transparent 80%);
   pointer-events: none;
 }
@@ -565,7 +565,7 @@ html, body {
         <span class="card-label-text" id="t-cardLabel">Your Review</span>
         <div class="card-label-line r"></div>
       </div>
-      <div class="review-text" id="reviewText">Generating review&hellip;</div>
+      <div class="review-text" id="reviewText">Loading review&hellip;</div>
       <div class="divider">
         <div class="div-line"></div>
         <span class="div-gem">&#9670;</span>
@@ -633,128 +633,7 @@ const I18N = {
   }
 };
 
-/* ── CLIENT-SIDE REVIEW DATA (OFFLINE GENERATION) ── */
-const REVIEW_DATA = {
-  en: {
-    wholesale: {
-      openers: [
-        "Shahab & Sons in Sultan Katra is the first name that comes to mind when starting a new cosmetic retail business in Varanasi.",
-        "Visited Shahab & Sons for bulk purchases and the wholesale selection genuinely rivals the biggest distributors.",
-        "Was looking for a reliable supplier to open a new shop and Shahab & Sons had everything in stock with complete authenticity."
-      ],
-      details: [
-        "The wholesale rates are so competitive that they easily beat online platforms, giving retail owners excellent margins.",
-        "The free packaging service they offer for bulk goods is something very few wholesale shops do, and it saves so much hassle.",
-        "Every product at Shahab & Sons is 100 percent genuine, which completely eliminates grey-market uncertainty."
-      ],
-      closers: [
-        "Best cosmetic wholesaler in Varanasi, no doubt.",
-        "Highly recommend Shahab & Sons to anyone looking for genuine wholesale cosmetics.",
-        "The owner's business guidance is an invaluable bonus for any new shop owner."
-      ]
-    },
-    parlour: {
-      openers: [
-        "Shahab & Sons is the most reliable destination for beauty parlour supplies in Varanasi.",
-        "Bought my entire beauty parlour setup from Shahab & Sons and the genuine products gave my clients total confidence.",
-        "The professional makeup section at Shahab & Sons has a curated selection that covers every bridal need."
-      ],
-      details: [
-        "Beauty parlour supplies from foundations to nail paints are available under one roof with a guarantee of zero counterfeit items.",
-        "The premium skincare range here is the right choice for professionals who refuse to compromise on client safety.",
-        "They carry everything from basic daily skincare to full high-end bridal makeup kits."
-      ],
-      closers: [
-        "My beauty parlour business relies entirely on Shahab & Sons. Highly recommended.",
-        "For professional parlour supplies in Varanasi, there is simply no better store.",
-        "The trust and product consistency here is simply unmatched locally."
-      ]
-    },
-    fmcg: {
-      openers: [
-        "Shahab & Sons is where I go for all general cosmetics after repeatedly being disappointed by duplicate products elsewhere.",
-        "The FMCG and daily cosmetic section at Shahab & Sons is one of the most comprehensive I have found in Varanasi.",
-        "Could not find a reliable supplier for authentic daily wear cosmetics until Shahab & Sons."
-      ],
-      details: [
-        "Every single skincare and daily use product at Shahab & Sons is 100 percent original and properly batch-verified.",
-        "Daily use lipsticks and nail paints are heavily stocked in every current shade, making inventory management incredibly easy.",
-        "FMCG products come with proper billing and honest margins, a completely professional wholesale experience."
-      ],
-      closers: [
-        "The 70-year legacy of this store is entirely justified by their product quality.",
-        "I highly recommend Shahab & Sons for genuine, fresh FMCG stock.",
-        "Pricing is transparent and competitive, giving honest margins to retail owners."
-      ]
-    }
-  },
-  hi: {
-    wholesale: {
-      openers: [
-        "नयी दुकान खोलने के लिए शहाब एंड संस आये थे, यहाँ ओरिजिनल आइटम और बेस्ट होलसेल रेट मिलता है।",
-        "बिहार से आकर यहाँ से स्टॉक लिया, इनका व्यवहार और फ्री पैकेजिंग फैसिलिटी ने बहुत इम्प्रेस किया।",
-        "आज़मगढ़ से आये थे यह देखने कि इतना नाम क्यों है, और इनकी गाइडेंस ने मुझे गलत खरीदारी से बचा लिया।"
-      ],
-      details: [
-        "पिछले 15 साल से मेरी दुकान का सामान शहाब एंड संस से ही आ रहा है, हमेशा फ्रेश स्टॉक और असली प्रोडक्ट मिलता है।",
-        "जखनियाँ और सादात से बहुत लोग यहाँ आते हैं क्योंकि यहाँ ऑनलाइन से भी सस्ते रेट्स पर ओरिजिनल प्रोडक्ट मिलते हैं।",
-        "फ्री पैकेजिंग सर्विस इतनी अच्छी है कि दूसरे ज़िले में सामान ले जाने में कोई टेंशन नहीं होती।"
-      ],
-      closers: [
-        "शहाब एंड संस में स्टाफ पूरा सपोर्ट करते हैं, वाराणसी का बेस्ट होलसेलर।",
-        "इनका 70 साल का एक्सपीरियंस साफ़ दिखता है, बहुत ही भरोसेमंद दुकान है।",
-        "नए बिज़नेस वालों के लिए शहाब एंड संस से बेहतर जगह कोई नहीं है।"
-      ]
-    },
-    parlour: {
-      openers: [
-        "ब्यूटी पार्लर का सारा सामान शहाब एंड संस से लिया, सब ओरिजिनल निकला और क्लाइंट्स का रिस्पांस बहुत अच्छा है।",
-        "ब्राइडल मेकअप किट के लिए शहाब एंड संस बेस्ट जगह है, सारे ब्रांडेड आइटम एक ही जगह मिल गए।",
-        "चुनार से वाराणसी आयी थी पार्लर का सामान लेने, इनकी वैरायटी और रेट्स ने बहुत खुश कर दिया।"
-      ],
-      details: [
-        "यहाँ प्रोफेशनल ब्रशेस और नेल पेंट की वैरायटी इतनी बड़ी है कि किसी मेट्रो सिटी जाने की ज़रूरत नहीं पड़ती।",
-        "पार्लर के लिए जो भी नया ब्रांड मार्केट में आता है, वो सबसे पहले शहाब एंड संस पर मिलता है।",
-        "फाउंडेशन और मेकअप किट का इतना बड़ा कलेक्शन मैंने बनारस में कहीं और नहीं देखा।"
-      ],
-      closers: [
-        "यहाँ कॉस्मेटिक्स की क्वालिटी से कभी कॉम्प्रोमाइज नहीं होता, फुल्ली रिकमेंडेड।",
-        "पार्लर का बिज़नेस शुरू करने के लिए ये दुकान बेस्ट है।",
-        "इनकी ऑथेंटिसिटी और सर्विस सच में बहुत बढ़िया है।"
-      ]
-    },
-    fmcg: {
-      openers: [
-        "डेली यूज़ के कॉस्मेटिक्स और FMCG प्रोडक्ट्स के लिए शहाब एंड संस से बेहतर रेट पूरे बनारस में नहीं है।",
-        "जनरल आइटम्स का स्टॉक हमेशा फ्रेश रहता है, एक्सपायरी डेट की कभी कोई दिक्कत नहीं आयी।",
-        "मैं गाज़ीपुर से हूँ और FMCG के लिए हमेशा शहाब एंड संस पर ही ट्रस्ट किया है।"
-      ],
-      details: [
-        "स्किनकेयर प्रोडक्ट्स सब ओरिजिनल मिलते हैं, डुप्लीकेट का कोई डर नहीं होता जब आप यहाँ से शॉपिंग करते हैं।",
-        "नेल पेंट और लिपस्टिक की इतनी वैरायटी है कि दुकान के लिए स्टॉक सेलेक्ट करना बहुत आसान हो जाता है।",
-        "जो भी कस्टमर बेसिक स्किनकेयर मांगता है, उसके लिए इनका स्टॉक हमेशा बेस्ट होता है।"
-      ],
-      closers: [
-        "इनके ट्रांसपेरेंट बिलिंग और अच्छे मार्जिन से दुकानदारी में बहुत फायदा होता है।",
-        "बनारस की सबसे पुरानी और सबसे भरोसेमंद कॉस्मेटिक्स की दुकान।",
-        "मैं सभी रिटेलर्स को शहाब एंड संस से जुड़ने की सलाह दूंगा।"
-      ]
-    }
-  }
-};
-
-function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-
-function generateReview(cat, lang) {
-  if (cat === "all") {
-    var cats = ["wholesale", "parlour", "fmcg"];
-    cat = rnd(cats);
-  }
-  var data = REVIEW_DATA[lang][cat];
-  return rnd(data.openers) + " " + rnd(data.details) + " " + rnd(data.closers);
-}
-
-/* ── UI LOGIC ── */
+/* ── UI LOGIC & API FETCH ── */
 function setLanguage(lang) {
   currentLang = lang;
   document.getElementById("langEn").classList.toggle("active", lang === "en");
@@ -784,7 +663,6 @@ function selectCat(btn) {
   btn.classList.add('active');
   activeCat = btn.getAttribute('data-cat');
 
-  // Adjust card tint slightly based on category
   var tints = {
     'wholesale': 'rgba(255, 215, 0, 0.08)',
     'parlour':   'rgba(255, 182, 193, 0.08)',
@@ -815,12 +693,21 @@ function displayReview(text) {
   typeWriter();
 }
 
-function refreshReview() {
+async function refreshReview() {
   var btn = document.getElementById("btnRefresh");
+  var el  = document.getElementById("reviewText");
+
   btn.classList.add("spinning");
-  
-  var newRev = generateReview(activeCat, currentLang);
-  displayReview(newRev);
+  el.textContent = currentLang === 'hi' ? "समीक्षा लोड हो रही है..." : "Loading review...";
+
+  try {
+    // Fetching directly from API, passing both Category and Language
+    var response = await fetch('/api/getReview?cat=' + activeCat + '&lang=' + currentLang);
+    var data = await response.json();
+    displayReview(data.review);
+  } catch (error) {
+    displayReview(currentLang === 'hi' ? "नेटवर्क त्रुटि। कृपया पुनः प्रयास करें।" : "Network error. Please try again.");
+  }
 
   setTimeout(function() { btn.classList.remove("spinning"); }, 400);
 
@@ -919,7 +806,7 @@ function closeQR() { document.getElementById('qrOverlay').classList.remove('acti
   Particle.prototype.reset = function(init) {
     this.x = Math.random() * W;
     this.y = init ? Math.random() * H : H + 20;
-    this.type = Math.floor(Math.random() * 3); // 0=Gold Dust, 1=Blush Cloud, 2=Sparkle
+    this.type = Math.floor(Math.random() * 3); 
     
     if (this.type === 0) {
       this.r = Math.random() * 1.5 + 0.5;
@@ -959,12 +846,10 @@ function closeQR() { document.getElementById('qrOverlay').classList.remove('acti
 
       ctx.beginPath();
       if (p.type === 0) {
-        // Gold Dust
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 215, 0, ${alpha * 0.6})`;
         ctx.fill();
       } else if (p.type === 1) {
-        // Blush Cloud
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         var grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
         grad.addColorStop(0, `rgba(255, 182, 193, ${alpha * 0.08})`);
@@ -972,7 +857,6 @@ function closeQR() { document.getElementById('qrOverlay').classList.remove('acti
         ctx.fillStyle = grad;
         ctx.fill();
       } else {
-        // Sparkle (4-point star)
         var spike = p.r * 2;
         ctx.moveTo(p.x, p.y - spike);
         ctx.quadraticCurveTo(p.x, p.y, p.x + spike, p.y);
