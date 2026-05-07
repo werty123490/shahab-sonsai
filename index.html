@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Shahab & Sons Cosmetics Wholesaler — Leave a Review</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white:        #FFFFFF;
+  --off-white:    #F4F4F5;
+  --grey-1:       #A1A1AA;
+  --grey-2:       #52525B;
+  --grey-3:       #27272A;
+  --glass-bg:     rgba(255,255,255,0.05);
+  --glass-border: rgba(255,255,255,0.10);
+  --glass-hover:  rgba(255,255,255,0.09);
+  --accent:       rgba(255,255,255,0.80);
+}
+
+html, body {
+  min-height: 100%;
+  background: #050300; /* Deepest warm black */
+  font-family: 'Montserrat', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  color: var(--white);
+  touch-action: manipulation; /* Prevent double-tap zoom */
+}
+
+/* ── BACKGROUND ── */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse 55% 40% at 10% 8%,  rgba(255, 215, 0, 0.03) 0%, transparent 55%), /* Gold hint */
+    radial-gradient(ellipse 50% 45% at 90% 90%,  rgba(255, 182, 193, 0.03) 0%, transparent 55%), /* Blush hint */
+    radial-gradient(ellipse 70% 60% at 50% 50%,  rgba(30, 20, 15, 0.60)   0%, transparent 80%);
+  pointer-events: none;
+}
+
+.bg-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+#particles {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.page {
+  position: relative;
+  z-index: 2;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 4vw, 40px) clamp(16px, 5vw, 24px) clamp(30px, 6vw, 50px);
+}
+
+/* ── LANGUAGE TOGGLE ── */
+.lang-toggle {
+  position: absolute;
+  top: clamp(15px, 4vw, 25px);
+  right: clamp(15px, 4vw, 25px);
+  display: flex;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  padding: 4px;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: var(--grey-1);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.05em;
+}
+.lang-btn.active {
+  background: linear-gradient(135deg, #FFD700, #FDB931);
+  color: #000;
+  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.2);
+}
+
+/* ── TEXT LOGO ── */
+.logo-block {
+  opacity: 0;
+  animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.10s forwards;
+  margin-bottom: clamp(10px, 2.5vw, 15px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-align: center;
+}
+.text-logo {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(26px, 6.5vw, 38px);
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  filter: drop-shadow(0 2px 10px rgba(255, 215, 0, 0.15));
+}
+.text-logo .amp {
+  font-weight: 300;
+  font-size: 0.85em;
+  background: linear-gradient(to bottom, #fcf6ba, #bf953f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.text-logo-sub {
+  font-size: clamp(8.5px, 2.5vw, 11px);
+  font-weight: 600;
+  letter-spacing: 0.4em;
+  color: var(--white);
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+/* ── STARS ── */
+.stars-block {
+  opacity: 0;
+  animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.22s forwards;
+  text-align: center;
+  margin-bottom: clamp(12px, 2.5vw, 18px);
+}
+.stars {
+  display: inline-flex;
+  gap: 5px;
+  margin-bottom: 6px;
+}
+.star {
+  font-size: clamp(17px, 4vw, 20px);
+  color: #FFD700;
+  display: inline-block;
+  animation: starPulse 3s ease-in-out infinite;
+  filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.4));
+}
+.star:nth-child(2) { animation-delay: 0.12s; }
+.star:nth-child(3) { animation-delay: 0.24s; }
+.star:nth-child(4) { animation-delay: 0.36s; }
+.star:nth-child(5) { animation-delay: 0.48s; }
+
+.stars-label {
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--grey-1);
+}
+
+/* ── CATEGORY FILTER ── */
+.cat-block {
+  opacity: 0;
+  animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.32s forwards;
+  width: 100%;
+  max-width: 460px;
+  margin-bottom: clamp(10px, 2vw, 14px);
+}
+.cat-row {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.cat-btn {
+  padding: 7px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  color: var(--grey-1);
+  font-family: 'Montserrat', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.20s ease;
+  white-space: nowrap;
+}
+.cat-btn:hover {
+  background: rgba(255,255,255,0.10);
+  color: var(--white);
+  border-color: rgba(255,255,255,0.25);
+}
+.cat-btn.active {
+  background: var(--white);
+  color: #000000;
+  border-color: var(--white);
+  box-shadow: 0 0 18px rgba(255,255,255,0.18);
+}
+
+/* ── CARD ── */
+.card-wrap {
+  width: 100%;
+  max-width: 460px;
+  padding: 1px;
+  border-radius: 16px;
+  background: linear-gradient(135deg,
+    rgba(255,255,255,0.18) 0%,
+    rgba(255,255,255,0.04) 40%,
+    rgba(255,255,255,0.12) 100%);
+  animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.42s both;
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.60),
+    0 2px 0 rgba(255,255,255,0.04) inset;
+  transition: background 0.5s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  border-radius: 15px;
+  padding: clamp(22px, 5vw, 30px) clamp(20px, 5vw, 28px) clamp(18px, 4vw, 24px);
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,215,0,0.35) 40%, rgba(255,215,0,0.60) 50%, rgba(255,215,0,0.35) 60%, transparent 100%);
+}
+.card-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+.card-label-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15));
+}
+.card-label-line.r { background: linear-gradient(90deg, rgba(255,255,255,0.15), transparent); }
+.card-label-text {
+  font-size: 7.5px;
+  font-weight: 700;
+  letter-spacing: 0.30em;
+  text-transform: uppercase;
+  color: var(--grey-1);
+  white-space: nowrap;
+}
+
+.review-text {
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(13.5px, 3.4vw, 15px);
+  font-weight: 400;
+  line-height: 1.85;
+  color: var(--white);
+  min-height: 90px;
+  word-break: break-word;
+  letter-spacing: 0.005em;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: clamp(14px, 3vw, 20px) 0;
+}
+.div-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.12));
+}
+.div-line.r { background: linear-gradient(90deg, rgba(255,255,255,0.12), transparent); }
+.div-gem {
+  color: rgba(255,215,0,0.4);
+  font-size: 8px;
+  line-height: 1;
+}
+
+/* ── BUTTONS ── */
+.btn-row {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+.btn-cta {
+  flex: 1;
+  min-height: 50px;
+  padding: 0 18px;
+  background: var(--white);
+  color: #000000;
+  font-family: 'Montserrat', sans-serif;
+  font-size: clamp(9px, 2.3vw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  border: 1px solid rgba(255,255,255,0.80);
+  border-radius: 8px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, color 0.18s ease;
+  box-shadow: 0 4px 18px rgba(255,255,255,0.10);
+}
+.btn-cta::after {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%;
+  width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.30) 50%, transparent 100%);
+  transform: skewX(-18deg);
+  pointer-events: none;
+}
+.btn-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 28px rgba(255,255,255,0.18);
+}
+.btn-cta:hover::after { animation: shimmerSweep 0.60s ease forwards; }
+.btn-cta:active { transform: scale(0.97); }
+
+.btn-cta.success {
+  background: rgba(255,215,0,0.15);
+  color: #FFD700;
+  border-color: rgba(255,215,0,0.40);
+}
+
+.btn-refresh {
+  flex: 0 0 50px;
+  height: 50px;
+  background: var(--glass-bg);
+  color: var(--grey-1);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.20s ease;
+}
+.btn-refresh:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(255,255,255,0.25);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+.btn-refresh:active { transform: scale(0.95); }
+.btn-refresh svg { transition: transform 0.45s cubic-bezier(.4,2,.55,.9); }
+.btn-refresh.spinning svg { transform: rotate(360deg); }
+
+/* ── BOTTOM STRIP ── */
+.bottom-strip {
+  opacity: 0;
+  animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.58s forwards;
+  text-align: center;
+  margin-top: clamp(14px, 3vw, 20px);
+}
+.badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 14px;
+  border: 1px solid var(--glass-border);
+  border-radius: 100px;
+  backdrop-filter: blur(8px);
+  background: var(--glass-bg);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  color: var(--grey-1);
+}
+.badge-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: #FFD700;
+  animation: dotPulse 2s ease-in-out infinite;
+  box-shadow: 0 0 6px rgba(255,215,0,0.80);
+}
+.address-text {
+  margin-top: 8px;
+  font-size: 10.5px;
+  color: var(--grey-2);
+  letter-spacing: 0.03em;
+  line-height: 1.7;
+}
+.hint-text {
+  margin-top: 9px;
+  font-size: 10.5px;
+  color: var(--grey-1);
+  letter-spacing: 0.02em;
+  min-height: 16px;
+}
+
+/* ── QR OVERLAY ── */
+.qr-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.qr-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.qr-modal {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,215,0,0.25);
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  transform: translateY(30px);
+  transition: transform 0.4s cubic-bezier(0.22,1,0.36,1);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  width: 85%;
+  max-width: 320px;
+}
+.qr-overlay.active .qr-modal { transform: translateY(0); }
+.qr-modal h3 {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: var(--white);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+.qr-modal p {
+  font-size: 11px;
+  color: var(--grey-1);
+  margin-bottom: 20px;
+}
+.qr-image-wrapper {
+  background: var(--white);
+  padding: 15px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 25px;
+  box-shadow: 0 10px 25px rgba(255,215,0,0.1);
+}
+.qr-image-wrapper img {
+  display: block;
+  width: 180px;
+  height: 180px;
+}
+.btn-close-qr {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255,255,255,0.10);
+  color: var(--white);
+  border: 1px solid rgba(255,255,255,0.30);
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.btn-close-qr:hover {
+  background: rgba(255,255,255,0.20);
+}
+
+/* ── KEYFRAMES ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes starPulse {
+  0%, 100% { transform: scale(1);    filter: drop-shadow(0 0 3px rgba(255,215,0,0.30)); }
+  50%       { transform: scale(1.1); filter: drop-shadow(0 0 12px rgba(255,215,0,0.70)); }
+}
+@keyframes shimmerSweep {
+  0%   { left: -120%; }
+  100% { left: 160%; }
+}
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.25; transform: scale(0.55); }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer"></div>
+<canvas id="particles"></canvas>
+
+<!-- EN/HI Language Toggle -->
+<div class="lang-toggle">
+  <button class="lang-btn active" id="langEn" onclick="setLanguage('en')">EN</button>
+  <button class="lang-btn" id="langHi" onclick="setLanguage('hi')">HI</button>
+</div>
+
+<div class="page">
+  <div class="logo-block">
+    <h1 class="text-logo">SHAHAB <span class="amp">&amp;</span> SONS</h1>
+    <p class="text-logo-sub">Cosmetics Wholesaler</p>
+  </div>
+
+  <div class="stars-block">
+    <div class="stars">
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+      <span class="star">&#9733;</span>
+    </div>
+    <div class="stars-label" id="t-starsLabel">Share your experience</div>
+  </div>
+
+  <div class="cat-block">
+    <div class="cat-row" id="catRow">
+      <button class="cat-btn" data-cat="wholesale" onclick="selectCat(this)" id="t-btnWs">Wholesale</button>
+      <button class="cat-btn" data-cat="parlour" onclick="selectCat(this)" id="t-btnPa">Parlour</button>
+      <button class="cat-btn" data-cat="fmcg" onclick="selectCat(this)" id="t-btnFm">FMCG</button>
+      <button class="cat-btn active" data-cat="all" onclick="selectCat(this)" id="t-btnAll">All</button>
+    </div>
+  </div>
+
+  <div class="card-wrap" id="cardWrap">
+    <div class="card">
+      <div class="card-label">
+        <div class="card-label-line"></div>
+        <span class="card-label-text" id="t-cardLabel">Your Review</span>
+        <div class="card-label-line r"></div>
+      </div>
+      <div class="review-text" id="reviewText">Generating review&hellip;</div>
+      <div class="divider">
+        <div class="div-line"></div>
+        <span class="div-gem">&#9670;</span>
+        <div class="div-line r"></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn-cta" id="btnCopy" onclick="copyAndGo()">Copy &amp; Post on Google</button>
+        <button class="btn-refresh" id="btnRefresh" onclick="refreshReview()" title="New review">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-strip">
+    <div class="badge-row">
+      <div class="badge"><span class="badge-dot"></span><span id="t-badge">Premium Cosmetics Wholesaler in Varanasi</span></div>
+    </div>
+    <div class="address-text">Ck. 47/12, Sultan Katra, Masjid Wali Gali Sarai,<br>Harha, Varanasi, Uttar Pradesh 221001</div>
+    <div class="hint-text" id="t-hint">Tap to copy your review, then paste it on Google.</div>
+  </div>
+</div>
+
+<!-- QR CODE MODAL OVERLAY -->
+<div class="qr-overlay" id="qrOverlay" onclick="closeQR()">
+  <div class="qr-modal" onclick="event.stopPropagation()">
+    <h3 id="t-qrTitle">Share This Page</h3>
+    <p id="t-qrDesc">Scan to instantly open on another device</p>
+    <div class="qr-image-wrapper">
+      <img id="qrImage" src="" alt="Page QR Code">
+    </div>
+    <button class="btn-close-qr" onclick="closeQR()" id="t-btnQrClose">Close</button>
+  </div>
+</div>
+
+<script>
+/* ── TRANSLATIONS & STATE ── */
+var reviewLink = "https://search.google.com/local/writereview?placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ";
+var activeCat = "all";
+var currentLang = "en";
+var currentReview = "";
+var _typewriterTimer = null;
+
+const I18N = {
+  en: {
+    starsLabel: "Share your experience",
+    btnWs: "Wholesale", btnPa: "Parlour", btnFm: "FMCG", btnAll: "All",
+    cardLabel: "Your Review",
+    btnCopy: "Copy & Post on Google", btnCopied: "Copied! Opening Google... ✓",
+    hint: "Tap to copy your review, then paste it on Google.", hintCopied: "Paste it in the review box on Google. 📱",
+    badge: "Premium Cosmetics Wholesaler in Varanasi",
+    qrTitle: "Share This Page", qrDesc: "Scan to instantly open on another device", btnQrClose: "Close"
+  },
+  hi: {
+    starsLabel: "अपना अनुभव साझा करें",
+    btnWs: "होलसेल", btnPa: "पार्लर", btnFm: "एफएमसीजी", btnAll: "सभी",
+    cardLabel: "आपकी समीक्षा",
+    btnCopy: "कॉपी करें और गूगल पर पोस्ट करें", btnCopied: "कॉपी हो गया! गूगल खुल रहा है... ✓",
+    hint: "अपनी समीक्षा कॉपी करने के लिए टैप करें, फिर गूगल पर पेस्ट करें।", hintCopied: "इसे गूगल के रिव्यू बॉक्स में पेस्ट करें। 📱",
+    badge: "वाराणसी का प्रीमियम कॉस्मेटिक्स होलसेलर",
+    qrTitle: "यह पेज शेयर करें", qrDesc: "दूसरे डिवाइस पर तुरंत खोलने के लिए स्कैन करें", btnQrClose: "बंद करें"
+  }
+};
+
+/* ── CLIENT-SIDE REVIEW DATA (OFFLINE GENERATION) ── */
+const REVIEW_DATA = {
+  en: {
+    wholesale: {
+      openers: [
+        "Shahab & Sons in Sultan Katra is the first name that comes to mind when starting a new cosmetic retail business in Varanasi.",
+        "Visited Shahab & Sons for bulk purchases and the wholesale selection genuinely rivals the biggest distributors.",
+        "Was looking for a reliable supplier to open a new shop and Shahab & Sons had everything in stock with complete authenticity."
+      ],
+      details: [
+        "The wholesale rates are so competitive that they easily beat online platforms, giving retail owners excellent margins.",
+        "The free packaging service they offer for bulk goods is something very few wholesale shops do, and it saves so much hassle.",
+        "Every product at Shahab & Sons is 100 percent genuine, which completely eliminates grey-market uncertainty."
+      ],
+      closers: [
+        "Best cosmetic wholesaler in Varanasi, no doubt.",
+        "Highly recommend Shahab & Sons to anyone looking for genuine wholesale cosmetics.",
+        "The owner's business guidance is an invaluable bonus for any new shop owner."
+      ]
+    },
+    parlour: {
+      openers: [
+        "Shahab & Sons is the most reliable destination for beauty parlour supplies in Varanasi.",
+        "Bought my entire beauty parlour setup from Shahab & Sons and the genuine products gave my clients total confidence.",
+        "The professional makeup section at Shahab & Sons has a curated selection that covers every bridal need."
+      ],
+      details: [
+        "Beauty parlour supplies from foundations to nail paints are available under one roof with a guarantee of zero counterfeit items.",
+        "The premium skincare range here is the right choice for professionals who refuse to compromise on client safety.",
+        "They carry everything from basic daily skincare to full high-end bridal makeup kits."
+      ],
+      closers: [
+        "My beauty parlour business relies entirely on Shahab & Sons. Highly recommended.",
+        "For professional parlour supplies in Varanasi, there is simply no better store.",
+        "The trust and product consistency here is simply unmatched locally."
+      ]
+    },
+    fmcg: {
+      openers: [
+        "Shahab & Sons is where I go for all general cosmetics after repeatedly being disappointed by duplicate products elsewhere.",
+        "The FMCG and daily cosmetic section at Shahab & Sons is one of the most comprehensive I have found in Varanasi.",
+        "Could not find a reliable supplier for authentic daily wear cosmetics until Shahab & Sons."
+      ],
+      details: [
+        "Every single skincare and daily use product at Shahab & Sons is 100 percent original and properly batch-verified.",
+        "Daily use lipsticks and nail paints are heavily stocked in every current shade, making inventory management incredibly easy.",
+        "FMCG products come with proper billing and honest margins, a completely professional wholesale experience."
+      ],
+      closers: [
+        "The 70-year legacy of this store is entirely justified by their product quality.",
+        "I highly recommend Shahab & Sons for genuine, fresh FMCG stock.",
+        "Pricing is transparent and competitive, giving honest margins to retail owners."
+      ]
+    }
+  },
+  hi: {
+    wholesale: {
+      openers: [
+        "नयी दुकान खोलने के लिए शहाब एंड संस आये थे, यहाँ ओरिजिनल आइटम और बेस्ट होलसेल रेट मिलता है।",
+        "बिहार से आकर यहाँ से स्टॉक लिया, इनका व्यवहार और फ्री पैकेजिंग फैसिलिटी ने बहुत इम्प्रेस किया।",
+        "आज़मगढ़ से आये थे यह देखने कि इतना नाम क्यों है, और इनकी गाइडेंस ने मुझे गलत खरीदारी से बचा लिया।"
+      ],
+      details: [
+        "पिछले 15 साल से मेरी दुकान का सामान शहाब एंड संस से ही आ रहा है, हमेशा फ्रेश स्टॉक और असली प्रोडक्ट मिलता है।",
+        "जखनियाँ और सादात से बहुत लोग यहाँ आते हैं क्योंकि यहाँ ऑनलाइन से भी सस्ते रेट्स पर ओरिजिनल प्रोडक्ट मिलते हैं।",
+        "फ्री पैकेजिंग सर्विस इतनी अच्छी है कि दूसरे ज़िले में सामान ले जाने में कोई टेंशन नहीं होती।"
+      ],
+      closers: [
+        "शहाब एंड संस में स्टाफ पूरा सपोर्ट करते हैं, वाराणसी का बेस्ट होलसेलर।",
+        "इनका 70 साल का एक्सपीरियंस साफ़ दिखता है, बहुत ही भरोसेमंद दुकान है।",
+        "नए बिज़नेस वालों के लिए शहाब एंड संस से बेहतर जगह कोई नहीं है।"
+      ]
+    },
+    parlour: {
+      openers: [
+        "ब्यूटी पार्लर का सारा सामान शहाब एंड संस से लिया, सब ओरिजिनल निकला और क्लाइंट्स का रिस्पांस बहुत अच्छा है।",
+        "ब्राइडल मेकअप किट के लिए शहाब एंड संस बेस्ट जगह है, सारे ब्रांडेड आइटम एक ही जगह मिल गए।",
+        "चुनार से वाराणसी आयी थी पार्लर का सामान लेने, इनकी वैरायटी और रेट्स ने बहुत खुश कर दिया।"
+      ],
+      details: [
+        "यहाँ प्रोफेशनल ब्रशेस और नेल पेंट की वैरायटी इतनी बड़ी है कि किसी मेट्रो सिटी जाने की ज़रूरत नहीं पड़ती।",
+        "पार्लर के लिए जो भी नया ब्रांड मार्केट में आता है, वो सबसे पहले शहाब एंड संस पर मिलता है।",
+        "फाउंडेशन और मेकअप किट का इतना बड़ा कलेक्शन मैंने बनारस में कहीं और नहीं देखा।"
+      ],
+      closers: [
+        "यहाँ कॉस्मेटिक्स की क्वालिटी से कभी कॉम्प्रोमाइज नहीं होता, फुल्ली रिकमेंडेड।",
+        "पार्लर का बिज़नेस शुरू करने के लिए ये दुकान बेस्ट है।",
+        "इनकी ऑथेंटिसिटी और सर्विस सच में बहुत बढ़िया है।"
+      ]
+    },
+    fmcg: {
+      openers: [
+        "डेली यूज़ के कॉस्मेटिक्स और FMCG प्रोडक्ट्स के लिए शहाब एंड संस से बेहतर रेट पूरे बनारस में नहीं है।",
+        "जनरल आइटम्स का स्टॉक हमेशा फ्रेश रहता है, एक्सपायरी डेट की कभी कोई दिक्कत नहीं आयी।",
+        "मैं गाज़ीपुर से हूँ और FMCG के लिए हमेशा शहाब एंड संस पर ही ट्रस्ट किया है।"
+      ],
+      details: [
+        "स्किनकेयर प्रोडक्ट्स सब ओरिजिनल मिलते हैं, डुप्लीकेट का कोई डर नहीं होता जब आप यहाँ से शॉपिंग करते हैं।",
+        "नेल पेंट और लिपस्टिक की इतनी वैरायटी है कि दुकान के लिए स्टॉक सेलेक्ट करना बहुत आसान हो जाता है।",
+        "जो भी कस्टमर बेसिक स्किनकेयर मांगता है, उसके लिए इनका स्टॉक हमेशा बेस्ट होता है।"
+      ],
+      closers: [
+        "इनके ट्रांसपेरेंट बिलिंग और अच्छे मार्जिन से दुकानदारी में बहुत फायदा होता है।",
+        "बनारस की सबसे पुरानी और सबसे भरोसेमंद कॉस्मेटिक्स की दुकान।",
+        "मैं सभी रिटेलर्स को शहाब एंड संस से जुड़ने की सलाह दूंगा।"
+      ]
+    }
+  }
+};
+
+function rnd(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+function generateReview(cat, lang) {
+  if (cat === "all") {
+    var cats = ["wholesale", "parlour", "fmcg"];
+    cat = rnd(cats);
+  }
+  var data = REVIEW_DATA[lang][cat];
+  return rnd(data.openers) + " " + rnd(data.details) + " " + rnd(data.closers);
+}
+
+/* ── UI LOGIC ── */
+function setLanguage(lang) {
+  currentLang = lang;
+  document.getElementById("langEn").classList.toggle("active", lang === "en");
+  document.getElementById("langHi").classList.toggle("active", lang === "hi");
+  
+  var dict = I18N[lang];
+  document.getElementById("t-starsLabel").innerText = dict.starsLabel;
+  document.getElementById("t-btnWs").innerText = dict.btnWs;
+  document.getElementById("t-btnPa").innerText = dict.btnPa;
+  document.getElementById("t-btnFm").innerText = dict.btnFm;
+  document.getElementById("t-btnAll").innerText = dict.btnAll;
+  document.getElementById("t-cardLabel").innerText = dict.cardLabel;
+  document.getElementById("btnCopy").innerText = dict.btnCopy;
+  document.getElementById("t-hint").innerText = dict.hint;
+  document.getElementById("t-badge").innerText = dict.badge;
+  document.getElementById("t-qrTitle").innerText = dict.qrTitle;
+  document.getElementById("t-qrDesc").innerText = dict.qrDesc;
+  document.getElementById("t-btnQrClose").innerText = dict.btnQrClose;
+
+  document.getElementById("btnCopy").classList.remove("success");
+  
+  refreshReview();
+}
+
+function selectCat(btn) {
+  document.querySelectorAll('.cat-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  activeCat = btn.getAttribute('data-cat');
+
+  // Adjust card tint slightly based on category
+  var tints = {
+    'wholesale': 'rgba(255, 215, 0, 0.08)',
+    'parlour':   'rgba(255, 182, 193, 0.08)',
+    'fmcg':      'rgba(255, 255, 255, 0.08)',
+    'all':       'rgba(255, 215, 0, 0.04)'
+  };
+  var accent = tints[activeCat] || tints['all'];
+  document.getElementById('cardWrap').style.background =
+    'linear-gradient(135deg, rgba(255,255,255,0.15) 0%, ' + accent + ' 40%, rgba(255,255,255,0.08) 100%)';
+
+  refreshReview();
+}
+
+function displayReview(text) {
+  var el = document.getElementById("reviewText");
+  if (_typewriterTimer !== null) { clearTimeout(_typewriterTimer); _typewriterTimer = null; }
+  currentReview = text;
+  el.textContent = "";
+  
+  var i = 0;
+  function typeWriter() {
+    if (i < text.length) {
+      el.textContent = text.slice(0, i + 1);
+      i++;
+      _typewriterTimer = setTimeout(typeWriter, Math.random() * 5 + 5);
+    }
+  }
+  typeWriter();
+}
+
+function refreshReview() {
+  var btn = document.getElementById("btnRefresh");
+  btn.classList.add("spinning");
+  
+  var newRev = generateReview(activeCat, currentLang);
+  displayReview(newRev);
+
+  setTimeout(function() { btn.classList.remove("spinning"); }, 400);
+
+  var cb = document.getElementById("btnCopy");
+  cb.innerText = I18N[currentLang].btnCopy;
+  cb.classList.remove("success");
+  document.getElementById("t-hint").innerText = I18N[currentLang].hint;
+}
+
+function copyAndGo() {
+  var btn = document.getElementById("btnCopy");
+  var dict = I18N[currentLang];
+  if (window.triggerBurst) window.triggerBurst();
+
+  function afterCopy() {
+    btn.innerText = dict.btnCopied;
+    btn.classList.add("success");
+    document.getElementById("t-hint").innerText = dict.hintCopied;
+    setTimeout(function() { window.open(reviewLink, "_blank"); }, 900);
+  }
+
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(currentReview).then(afterCopy).catch(fallback);
+  } else { fallback(); }
+
+  function fallback() {
+    var ta = document.createElement("textarea");
+    ta.value = currentReview;
+    ta.style.cssText = "position:fixed;top:0;left:0;opacity:0;";
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { document.execCommand("copy"); } catch(e) {}
+    document.body.removeChild(ta);
+    afterCopy();
+  }
+}
+
+window.addEventListener("DOMContentLoaded", function() { setLanguage('en'); });
+
+/* ── DOUBLE TAP / DOUBLE CLICK TO SHOW QR ── */
+let lastTap = 0;
+document.addEventListener('touchend', function(e) {
+  if (e.target.closest('button') || e.target.closest('.qr-modal') || e.target.closest('.lang-toggle')) return;
+  const currentTime = new Date().getTime();
+  if (currentTime - lastTap < 350 && currentTime - lastTap > 0) {
+    e.preventDefault(); showQR();
+  }
+  lastTap = currentTime;
+});
+
+document.addEventListener('dblclick', function(e) {
+  if (e.target.closest('button') || e.target.closest('.qr-modal') || e.target.closest('.lang-toggle')) return;
+  showQR();
+});
+
+function showQR() {
+  const currentUrl = encodeURIComponent(window.location.href);
+  document.getElementById('qrImage').src = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + currentUrl + "&bgcolor=ffffff";
+  document.getElementById('qrOverlay').classList.add('active');
+}
+function closeQR() { document.getElementById('qrOverlay').classList.remove('active'); }
+
+/* ── 3D CARD TILT ── */
+(function() {
+  var wrap = document.getElementById('cardWrap');
+  var tiltEnabled = true;
+  document.addEventListener('mousemove', function(e) {
+    if (!tiltEnabled) return;
+    var xAxis = ((window.innerWidth  / 2) - e.pageX) / (window.innerWidth  / 5);
+    var yAxis = ((window.innerHeight / 2) - e.pageY) / (window.innerHeight / 5);
+    wrap.style.transition = 'none';
+    wrap.style.transform = 'perspective(1000px) rotateY(' + (-xAxis) + 'deg) rotateX(' + yAxis + 'deg)';
+  });
+  document.addEventListener('mouseleave', function() {
+    wrap.style.transition = 'transform 0.6s cubic-bezier(0.22,1,0.36,1)';
+    wrap.style.transform  = 'perspective(1000px) rotateY(0deg) rotateX(0deg)';
+  });
+  window.addEventListener('touchstart', function() { tiltEnabled = false; }, { once: true });
+})();
+
+/* ── COSMETIC PARTICLE SYSTEM ── */
+(function() {
+  var canvas = document.getElementById('particles');
+  var ctx = canvas.getContext('2d');
+  var W, H, dpr;
+  function resize() {
+    dpr = window.devicePixelRatio || 1;
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+    ctx.scale(dpr, dpr);
+  }
+  window.addEventListener('resize', resize); resize();
+
+  function Particle() { this.reset(true); }
+  Particle.prototype.reset = function(init) {
+    this.x = Math.random() * W;
+    this.y = init ? Math.random() * H : H + 20;
+    this.type = Math.floor(Math.random() * 3); // 0=Gold Dust, 1=Blush Cloud, 2=Sparkle
+    
+    if (this.type === 0) {
+      this.r = Math.random() * 1.5 + 0.5;
+      this.speed = 0.003 + Math.random() * 0.005;
+    } else if (this.type === 1) {
+      this.r = Math.random() * 25 + 10;
+      this.speed = 0.001 + Math.random() * 0.002;
+    } else {
+      this.r = Math.random() * 3 + 1;
+      this.speed = 0.004 + Math.random() * 0.004;
+    }
+    
+    this.vx = (Math.random() - 0.5) * 0.2;
+    this.vy = -(Math.random() * 0.3 + 0.1);
+    this.life = Math.random() * Math.PI;
+  };
+
+  var particles = [];
+  for (var i = 0; i < 40; i++) particles.push(new Particle());
+
+  window.triggerBurst = function() {
+    particles.forEach(p => {
+      p.vy = -(Math.random() * 3 + 1.5);
+      p.vx = (Math.random() - 0.5) * 4;
+      if(p.type !== 1) p.r = Math.random() * 3 + 1.5;
+    });
+  };
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.life += p.speed;
+      if (p.y < -30) { p.reset(false); return; }
+      
+      var alpha = Math.sin(p.life);
+      if (alpha < 0) { p.reset(false); return; }
+
+      ctx.beginPath();
+      if (p.type === 0) {
+        // Gold Dust
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255, 215, 0, ${alpha * 0.6})`;
+        ctx.fill();
+      } else if (p.type === 1) {
+        // Blush Cloud
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        var grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+        grad.addColorStop(0, `rgba(255, 182, 193, ${alpha * 0.08})`);
+        grad.addColorStop(1, 'rgba(255, 182, 193, 0)');
+        ctx.fillStyle = grad;
+        ctx.fill();
+      } else {
+        // Sparkle (4-point star)
+        var spike = p.r * 2;
+        ctx.moveTo(p.x, p.y - spike);
+        ctx.quadraticCurveTo(p.x, p.y, p.x + spike, p.y);
+        ctx.quadraticCurveTo(p.x, p.y, p.x, p.y + spike);
+        ctx.quadraticCurveTo(p.x, p.y, p.x - spike, p.y);
+        ctx.quadraticCurveTo(p.x, p.y, p.x, p.y - spike);
+        ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.8})`;
+        ctx.fill();
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+</script>
+</body>
+</html>
