@@ -147,7 +147,7 @@ html, body {
   opacity: 0.75;
 }
 
-/* ── STARS ── */
+/* ── UI STARS ── */
 .stars-block {
   opacity: 0;
   animation: fadeUp 0.8s cubic-bezier(0.22,1,0.36,1) 0.22s forwards;
@@ -701,7 +701,6 @@ async function refreshReview() {
   el.textContent = currentLang === 'hi' ? "समीक्षा लोड हो रही है..." : "Loading review...";
 
   try {
-    // Fetching directly from API, passing both Category and Language
     var response = await fetch('/api/getReview?cat=' + activeCat + '&lang=' + currentLang);
     var data = await response.json();
     displayReview(data.review);
@@ -806,17 +805,16 @@ function closeQR() { document.getElementById('qrOverlay').classList.remove('acti
   Particle.prototype.reset = function(init) {
     this.x = Math.random() * W;
     this.y = init ? Math.random() * H : H + 20;
-    this.type = Math.floor(Math.random() * 3); 
+    
+    // 0 = Gold Dust, 1 = Blush Cloud (No more 4-pointed stars)
+    this.type = Math.floor(Math.random() * 2); 
     
     if (this.type === 0) {
       this.r = Math.random() * 1.5 + 0.5;
       this.speed = 0.003 + Math.random() * 0.005;
-    } else if (this.type === 1) {
+    } else {
       this.r = Math.random() * 25 + 10;
       this.speed = 0.001 + Math.random() * 0.002;
-    } else {
-      this.r = Math.random() * 3 + 1;
-      this.speed = 0.004 + Math.random() * 0.004;
     }
     
     this.vx = (Math.random() - 0.5) * 0.2;
@@ -849,21 +847,12 @@ function closeQR() { document.getElementById('qrOverlay').classList.remove('acti
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(255, 215, 0, ${alpha * 0.6})`;
         ctx.fill();
-      } else if (p.type === 1) {
+      } else {
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         var grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
         grad.addColorStop(0, `rgba(255, 182, 193, ${alpha * 0.08})`);
         grad.addColorStop(1, 'rgba(255, 182, 193, 0)');
         ctx.fillStyle = grad;
-        ctx.fill();
-      } else {
-        var spike = p.r * 2;
-        ctx.moveTo(p.x, p.y - spike);
-        ctx.quadraticCurveTo(p.x, p.y, p.x + spike, p.y);
-        ctx.quadraticCurveTo(p.x, p.y, p.x, p.y + spike);
-        ctx.quadraticCurveTo(p.x, p.y, p.x - spike, p.y);
-        ctx.quadraticCurveTo(p.x, p.y, p.x, p.y - spike);
-        ctx.fillStyle = `rgba(255, 255, 255, ${alpha * 0.8})`;
         ctx.fill();
       }
     });
