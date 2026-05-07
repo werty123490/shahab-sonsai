@@ -1,269 +1,539 @@
-// api/getReview.js
-
-const W_OPENERS = [
-  "Shahab & Sons Cosmetics Wholesaler in Hadha Sarai is the first name that comes to mind when starting a new cosmetic retail business in Varanasi",
-  "Visited Shahab & Sons for bulk purchases and the wholesale selection genuinely rivals the biggest distributors anywhere in the state",
-  "Was looking for a reliable supplier to open a new shop and Shahab & Sons had everything in stock with complete authenticity",
-  "Finally found a wholesale store in Varanasi where you can buy bulk cosmetics without worrying about fake products, Shahab & Sons is it",
-  "My search for a genuine FMCG wholesaler ended at Shahab & Sons and the experience from selection to free packaging was smoothly professional",
-  "Shahab & Sons in Sultan Katra is where I send everyone who asks me for business guidance in the cosmetics market, no exceptions",
-  "Walked into Shahab & Sons to start my retail journey and left understanding the entire cosmetics market better thanks to the owner's expert advice",
-  "The range of wholesale products at Shahab & Sons is extraordinary, covering everything a new shop needs from day one",
-  "Started my business purchasing from Shahab & Sons, carrying on a family tradition that has trusted this shop since 1987",
-  "Shahab & Sons has established itself as the go-to wholesale destination in the Hadha Sarai area and their 70-year legacy confirms why",
-  "Came all the way from Bihar to purchase wholesale stock and Shahab & Sons provided genuine rates and an incredibly smooth billing process",
-  "Discovered Shahab & Sons while looking for FMCG goods and found a store that makes starting a business genuinely enjoyable rather than stressful",
-  "The moment you walk into Shahab & Sons you can tell this is a store that takes the cosmetics wholesale business seriously at every level",
-  "Have been sourcing products in Varanasi for over 15 years and Shahab & Sons is the first store where I have never had a single complaint about quality",
-  "A fellow shopkeeper recommended Shahab & Sons for my new store purchase and the authenticity of the products and the fair margins were outstanding",
-  "Running a retail cosmetics shop in Jaunpur and have never found a Varanasi wholesaler more dependable than Shahab & Sons",
-  "Heard about Shahab & Sons through the wholesale market network and the reputation they have built there is completely deserved",
-  "Three generations of shopkeepers from our family have sourced their inventory from Shahab & Sons and the trust has never wavered once",
-  "The first wholesale supplier who explained product margins clearly and honestly to me was the owner at Shahab & Sons and that has kept me loyal ever since",
-  "Visited every major wholesaler in Varanasi before settling on Shahab & Sons and the difference in authentic product guarantee is night and day",
-  "No other wholesaler in the entire Purvanchal region has the breadth of genuine cosmetics stock that Shahab & Sons maintains year-round",
-  "Shahab & Sons is the rare wholesale shop that actually helps you build a sustainable retail business rather than just pushing stock at you",
-  "The wholesale market in Hadha Sarai has many stores but Shahab & Sons stands apart because of its commitment to zero counterfeit inventory",
-  "Placed my first bulk order at Shahab & Sons five years ago and every order since has confirmed that this is simply the best cosmetics wholesaler in Varanasi",
-  "My distributor from Gorakhpur specifically told me to visit Shahab & Sons for authentic FMCG products and the advice was absolutely spot on",
-  "Found Shahab & Sons through a Google search and the reviews were not exaggerating, the wholesale experience here is genuinely world-class for Varanasi",
-  "Every retail shopkeeper I know in eastern UP traces their most reliable stock source back to Shahab & Sons in Hadha Sarai",
-  "Came to Varanasi specifically for the wholesale cosmetics market and left with the strong conviction that Shahab & Sons is the only stop worth making",
-  "The consistency with which Shahab & Sons delivers genuine products and competitive rates over decades is what separates it from every competitor in the region",
-  "Opened my second shop last year and sourced everything from Shahab & Sons because my first shop's success was built entirely on their authentic wholesale stock"
-];
-
-const W_DETAILS = [
-  "The wholesale rates at Shahab & Sons are so competitive that they easily beat online platforms, giving retail shop owners excellent margins",
-  "They provide complete guidance for new business owners so that you make the perfect choice for your inventory without overspending",
-  "The free packaging service they offer for bulk goods is something very few wholesale shops do, and it saves so much hassle",
-  "Every product at Shahab & Sons is 100 percent genuine, which completely eliminates the grey-market uncertainty that plagues the cosmetic industry",
-  "The staff at Shahab & Sons helped me compare different FMCG brands and the stock recommendations they gave proved exactly right for my village shop",
-  "They carefully pack all your purchased goods without any extra charge, making it incredibly easy to transport items back to districts like Ghazipur or Azamgarh",
-  "Shahab & Sons stocks products suited to every market tier, making it easy to match your shop's inventory to your specific customer base",
-  "The variety at Shahab & Sons is a reminder that this store does not limit itself to just basic cosmetics, they cover the entire FMCG spectrum",
-  "They honestly disclose the market trends and guide you away from bad purchases, which is invaluable for a first-time shop owner",
-  "The stock at Shahab & Sons is always fresh, properly sealed, and comes with full assurance of brand authenticity",
-  "Shahab & Sons carries inventory that appeals to both premium retail buyers and budget-conscious village shops without sacrificing their authenticity guarantee",
-  "The owner has a deep, practical understanding of the cosmetics business and shares that knowledge generously with new entrepreneurs",
-  "The billing process at Shahab & Sons is completely transparent and they provide proper GST invoices, which makes accounting easy for retail owners",
-  "Stock replenishment at Shahab & Sons is fast and they always have backup inventory so you are never told your required item is out of stock",
-  "The product range covers national brands as well as fast-moving regional labels, ensuring your shop inventory matches your specific customer demand perfectly",
-  "Shahab & Sons maintains relationships with all major cosmetics companies directly, which means their pricing is at true wholesale levels without middlemen",
-  "The advice given by the staff on seasonal inventory planning has saved me from overstocking slow-moving items multiple times",
-  "Every item purchased from Shahab & Sons comes with complete batch details and expiry verification so you can confidently resell without any worry",
-  "Shahab & Sons is one of the very few wholesalers in Varanasi who will exchange stock if it turns out to be slow-moving in your local market",
-  "The sheer volume of authentic brands stocked at Shahab & Sons means you can complete your entire shop purchase in a single visit without running around the market",
-  "Their wholesale price list is updated regularly and the owner ensures margins remain fair even when supplier costs fluctuate in the market",
-  "Shahab & Sons does not charge hidden costs for sorting, packing, or loading goods, the price you are quoted is the price you pay",
-  "The experience of the staff in recommending the right product mix for different shop locations, whether urban or rural, is genuinely impressive",
-  "New shop owners receive patient, unhurried guidance at Shahab & Sons without any pressure to buy more than their budget allows",
-  "The wholesale catalogue at Shahab & Sons is comprehensive enough that even specialty cosmetics shops can source their complete inventory from one location"
-];
-
-const W_HI = [
-  "Nayi dukaan kholne ke liye Shahab & Sons aaye the, yahan original items aur best wholesale rate milta hai",
-  "Bihar se aakar yahan se stock liya, inka behaviour aur free packaging facility ne genuinely impress kiya",
-  "Azamgarh se aaye the yeh dekhne ki itna naam kyun hai, aur inki guidance ne mujhe galat purchases se bacha liya",
-  "Pichle 15 saal se meri dukaan ka saaman Shahab & Sons se hi aa raha hai, hamesha fresh stock aur genuine products",
-  "Ghazipur se hoon aur FMCG ke liye hamesha Shahab & Sons par trust kiya hai, inka 75 saal ka experience clearly dikhta hai",
-  "Business start karne walo ke liye Shahab & Sons best hai, proper guidance milti hai aur rates market se genuinely kam hain",
-  "Harahua se 2000 se yahan aa raha hoon, inki service aur genuine rates mein aaj tak koi kami nahi aayi",
-  "Jakhaniya aur Sadat se bahut log yahan aate hain kyunki yahan online se bhi saste rates par original products milte hain",
-  "Free packaging service itni achi hai ki doosre zila mein saaman le jaane mein koi tension nahi hoti",
-  "Shahab & Sons mein naye business owners ko genuinely treat kiya jaata hai, koi pressure nahi hota faltu saaman lene ka",
-  "Jaunpur se aakar bulk cosmetics liya, Shahab & Sons ne bilkul sahi rate aur ekdum sahi guidance di naye stock ke liye",
-  "Mirzapur se aaye the aur Shahab & Sons ka naam sunte sunte aaye the, woh sab kuch sach nikla jo logo ne bataya tha",
-  "Varanasi ke poore wholesale market mein ghume aur har jagah Shahab & Sons ka naam best aata hai, jo bilkul sahi bhi hai",
-  "Pehli bar bulk purchase mein ghanta ek ghante mein hi poora dukaan ka saaman ho gaya, itna organized store hai Shahab & Sons",
-  "Ek senior shopkeeper ne bataya tha Shahab & Sons ke baare mein, aaj 10 saal ho gaye, woh advice meri best business decision thi",
-  "Dukaan ka pehla stock yahan se liya aur customers ne genuine products ki taarif ki, tab se sirf Shahab & Sons hi aate hain",
-  "Hamirpur se cosmetics wholesale ke liye Varanasi aana padta hai aur Shahab & Sons ke alawa koi option sochte bhi nahi hain",
-  "Rate card dekh ke pehle yakeen nahi hua ki itne authentic products itne reasonable rate pe milenge, Shahab & Sons genuinely best hai",
-  "Balia aur Mau ke bahut shopkeepers bhi Shahab & Sons se hi stock lete hain, poore Purvanchal mein inki reputation number one hai",
-  "Stock lene ke baad jo GST bill mila woh ekdum clear aur proper tha, accounting mein koi problem nahi hoti Shahab & Sons ke saath"
-];
-
-const P_OPENERS = [
-  "Shahab & Sons is the most reliable destination for beauty parlour supplies in Varanasi and my recent kit purchase confirmed that completely",
-  "The professional makeup section at Shahab & Sons has a curated selection of brands that covers every bridal and parlour need",
-  "Bought my entire beauty parlour setup from Shahab & Sons and the genuine products gave my clients total confidence",
-  "Was nervous about sourcing professional cosmetics locally but Shahab & Sons completely changed that, the authenticity is excellent",
-  "Shahab & Sons helped me build a professional bridal kit with a product comparison that showed genuine knowledge of modern makeup trends",
-  "Every foundation, brush set, and makeup kit at Shahab & Sons is original and the staff can tell you exactly why brand authenticity matters for skin",
-  "For professional parlour supplies in Varanasi there is Shahab & Sons and then there is everything else, the gap in quality is significant",
-  "My beauty parlour business relies entirely on Shahab & Sons because the trust and product consistency there is simply unmatched",
-  "Walked into Shahab & Sons for basic parlour supplies and walked out with an entire upgraded kit that has genuinely improved my service quality",
-  "Setting up a new parlour in Chandauli and was advised by every experienced beautician to source from Shahab & Sons, the advice was completely right",
-  "The bridal season in Varanasi demands the highest quality cosmetics and Shahab & Sons is the only wholesaler who consistently meets that standard",
-  "Sourcing parlour supplies used to be my biggest headache until I found Shahab & Sons and now the process is completely smooth and trustworthy",
-  "My clients have commented on the noticeable improvement in makeup finish ever since I shifted entirely to Shahab & Sons sourced products",
-  "Travelled from Allahabad specifically for beauty parlour stock after a colleague recommended Shahab & Sons and the journey was absolutely worth it",
-  "The professional cosmetics section at Shahab & Sons is stocked with such depth and variety that even seasoned makeup artists discover new products there",
-  "After years of dealing with unreliable suppliers, finding Shahab & Sons felt like finally getting the professional partner my parlour deserved",
-  "No other cosmetics store in Varanasi has invested as much in stocking genuine professional-grade parlour supplies as Shahab & Sons has",
-  "Opened my third parlour branch and sourced all professional cosmetics from Shahab & Sons because they have never once let me down on quality",
-  "The expertise of the staff at Shahab & Sons in matching parlour supplies to specific skin tone requirements is something no other store in the city offers"
-];
-
-const P_DETAILS = [
-  "The professional makeup kits at Shahab & Sons are available for every skin tone requirement and the staff understand the professional specs properly",
-  "Beauty parlour supplies from foundations to nail paints are available under one roof with a guarantee of zero counterfeit items",
-  "The cosmetic brush ranges at Shahab & Sons cover both basic utility and professional blending requirements perfectly",
-  "Shahab & Sons completes every parlour purchase with sensible recommendations for fast-moving items that will increase daily business revenue",
-  "The premium skincare range at Shahab & Sons is the right choice for professionals who refuse to compromise on client safety and results",
-  "They carry everything from basic daily skincare to full high-end bridal makeup kits, keeping stock perfectly current with market trends",
-  "The authenticity of the lipsticks and eye makeup at Shahab & Sons ensures parlour owners never have to worry about client allergic reactions",
-  "Professional heavy-base foundations and setting sprays at Shahab & Sons are stocked specifically for the local climate and bridal season needs",
-  "The bridal makeup collection at Shahab & Sons is refreshed regularly and the staff stay current with seasonal trends so your parlour never looks outdated",
-  "Setting powders, contour palettes, and professional blushes are available in depth of shade range that satisfies even the most particular makeup artist",
-  "Shahab & Sons maintains stock of both well-known international brands and trusted Indian professional labels, giving parlour owners the best of both markets",
-  "The staff at Shahab & Sons can guide a new parlour owner through building a complete professional kit within any given budget without compromising quality",
-  "Every product bought for parlour use at Shahab & Sons is properly batch-coded so you can verify authenticity and check expiry before applying to clients",
-  "The nail care section at Shahab & Sons is extensive enough to support a dedicated nail art studio, not just a basic parlour service menu",
-  "Shahab & Sons stocks professional hair colour ranges alongside cosmetics, making it a single-stop source for full-service beauty parlour requirements",
-  "The availability of genuine dermatologically tested skincare at Shahab & Sons gives parlour owners confidence when treating clients with sensitive skin",
-  "Wax kits, threading essentials, and facial tools at Shahab & Sons complete the parlour supply experience beyond just colour cosmetics"
-];
-
-const P_HI = [
-  "Beauty parlour ka saara saaman Shahab & Sons se liya, sab original nikla aur clients ka response bahut acha hai",
-  "Bridal makeup kit ke liye Shahab & Sons best jagah hai, saare branded foundations aur palettes ek hi jagah mil gaye",
-  "Chunar se Varanasi aayi thi parlour ka saaman lene, inki variety aur affordable rates ne genuinely khush kar diya",
-  "Shahab & Sons par professional brushes aur nail paint ki variety itni badi hai ki metro city jaane ki zaroorat nahi padti",
-  "Parlour ke liye jo bhi naya brand market mein aata hai, woh sabse pehle Shahab & Sons par authentic seal ke saath mil jata hai",
-  "Yahan cosmetics ki quality se kabhi compromise nahi hota, aur yahi wajah hai ki hamara inpar itna lamba trust hai",
-  "Foundation aur makeup kit ka itna huge collection maine Varanasi mein kahin aur nahi dekha, genuinely premium store",
-  "Nayi parlour kholi thi toh ek senior beautician ne Shahab & Sons ka naam suggest kiya, woh suggestion meri best decision thi",
-  "Bridal season mein stock khatam hone ki tension Shahab & Sons ke hote nahi hoti, woh hamesha puri quantity mein ready rehte hain",
-  "Setting spray aur heavy-base products jo poore din makeup set rakhte hain woh sirf Shahab & Sons pe milte hain Varanasi mein",
-  "Clients ki skin reaction kabhi nahi aayi Shahab & Sons ke products se, yahi guarantee hai original cosmetics ki",
-  "Professional nail art kit bhi Shahab & Sons se liya, variety aur quality dono mein yeh store sab se aage hai",
-  "Parlour mein naye brands introduce karne se pehle Shahab & Sons par jaake dekho, woh already latest stock rakhte hain"
-];
-
-const F_OPENERS = [
-  "Shahab & Sons in Hadha Sarai is where I go for all general cosmetics after repeatedly being disappointed by duplicate products elsewhere",
-  "The FMCG and daily cosmetic section at Shahab & Sons is one of the most comprehensive I have found in Varanasi",
-  "Every single skincare and daily use product at Shahab & Sons is 100 percent original and properly batch-verified",
-  "Shahab & Sons carries daily cosmetics for every need, from basic lotions to premium skincare, and the quality standard is consistent",
-  "Could not find a reliable supplier for authentic daily wear cosmetics until Shahab & Sons, and now it is my only stop",
-  "The variety of general items at Shahab & Sons extends the store's coverage to every kind of customer without any compromise on authenticity",
-  "Bought basic skincare items from Shahab & Sons and the freshness of the stock reinforces why buying from an authorized wholesaler matters",
-  "For daily-use FMCG cosmetics in Varanasi, Shahab & Sons has no genuine competitor because the combination of variety and authenticity is unique",
-  "Shopping for general cosmetics at Shahab & Sons feels different because everything from moisturiser to sunscreen is stocked with serious attention to quality",
-  "My retail shop's daily cosmetics section has never had a single customer complaint since I shifted entirely to sourcing from Shahab & Sons",
-  "The general cosmetics inventory at Shahab & Sons is so well-maintained that even mid-season product changes never leave their shelves empty",
-  "Shahab & Sons is the Varanasi cosmetics store that has genuinely made the entire FMCG daily-use category trustworthy for local retail buyers",
-  "Every face wash, lotion, and sunscreen I buy for my shop comes from Shahab & Sons and the customer return rate has improved significantly",
-  "Tried many suppliers for daily cosmetic goods before discovering Shahab & Sons and the authenticity difference was immediately visible to my customers"
-];
-
-const F_DETAILS = [
-  "The skincare range at Shahab & Sons includes every price tier and the staff can help you pick the right fast-moving items for retail",
-  "Daily use lipsticks and nail paints are heavily stocked in every current shade, making inventory management incredibly easy",
-  "FMCG products at Shahab & Sons come with proper billing and honest margins, a properly complete wholesale experience",
-  "Basic moisturizers, face washes, and daily beauty items are always in stock in bulk quantities so you never have to turn a customer away",
-  "The general cosmetics at Shahab & Sons appeal to everyday buyers who value reliable quality over unverified local alternatives",
-  "Sunscreens, toners, and serums for daily skincare are available at Shahab & Sons in both budget and premium tiers to match any retail market",
-  "The FMCG cosmetics at Shahab & Sons are sourced directly from authorized distributors so every product carries valid batch codes and authentic packaging",
-  "Hair care products including shampoos, conditioners, and oils are stocked alongside cosmetics at Shahab & Sons, making it a true one-stop FMCG shop",
-  "Daily deodorants, talcum powders, and body lotions are available in bulk at Shahab & Sons with rates that give retail owners strong competitive margins",
-  "The cold cream and winter skincare range at Shahab & Sons is stocked seasonally well in advance, ensuring you never miss peak demand period",
-  "Shahab & Sons keeps its general cosmetics section organized by brand and category, making it easy to compare options and complete a full purchase quickly",
-  "The staff at Shahab & Sons know exactly which daily-use items sell fastest in different markets and tailor their recommendations accordingly",
-  "Perfumes and deodorant sprays at Shahab & Sons are available in genuine sealed packaging with no risk of refilled or counterfeit products",
-  "Baby care cosmetics and gentle skincare lines are also available at Shahab & Sons, catering to shops that serve young family customers"
-];
-
-const F_HI = [
-  "Daily use ke cosmetics aur FMCG products ke liye Shahab & Sons se better rate poore Banaras mein nahi hai",
-  "Nail paint aur lipstick ki itni variety hai yahan ki dukaan ke liye display select karna bahut aasan ho jata hai",
-  "Skincare products sab original milte hain, duplicate ka koi dar nahi hota jab aap Shahab & Sons se shopping karte ho",
-  "General items ka stock hamesha fresh rehta hai, expiry date ki kabhi koi complaint nahi aayi inke yahan se",
-  "Jo bhi naya customer aakar basic skincare maangta hai, uske liye Shahab & Sons ka stock hamesha sufficient aur best hota hai",
-  "Face wash aur moisturizer ke itne options hain Shahab & Sons mein ki alag alag budget ke customers sab satisfy ho jaate hain",
-  "FMCG goods ka jo billing system hai Shahab & Sons mein woh bilkul clear hai, koi hidden charge nahi hota kabhi",
-  "Shampoo se lekar sunscreen tak sab ek hi jagah milta hai Shahab & Sons mein, time aur paisa dono bachta hai",
-  "Shahab & Sons mein sardi ke season se pehle hi cold cream aur winter products ka poora stock aa jaata hai",
-  "Body lotion aur talcum powder bulk mein lete hain kyunki rate genuinely kam hain aur quality par kabhi doubt nahi hota",
-  "Perfume aur deo section Shahab & Sons mein ekdum asli products se bhara rehta hai, refilled ya fake ka koi chance nahi",
-  "Baby care products bhi Shahab & Sons mein milte hain, toh jo log family-oriented shop chalate hain unke liye bhi best hai",
-  "Seasonal offers aur naye brand launches ke baare mein Shahab & Sons ke staff khud inform karte hain, yeh service kahin nahi milti"
-];
-
-const G_SERVICE = [
-  "Shahab & Sons combines authentic original products with genuinely knowledgeable staff and that combination is rare and valuable in Varanasi",
-  "The legacy of 70+ years at Shahab & Sons is entirely justified by the consistency of product quality and the reliability of their service",
-  "The pricing at Shahab & Sons is transparent and competitive, giving honest margins to retail owners",
-  "Shahab & Sons is the best wholesale cosmetic store in Hadha Sarai and the trust it has built locally is evident from the steady flow of customers from other districts",
-  "The free packaging service at Shahab & Sons is something other wholesalers do not offer, they pack goods carefully without prompting",
-  "For original, authentic cosmetics in Varanasi there is genuinely no store that matches Shahab & Sons for reliability",
-  "Shahab & Sons treats every business owner as a long-term relationship rather than a transaction and the repeat business reflects that philosophy",
-  "The owner has a deep understanding of the cosmetics business and ensures that new shop owners are protected from bad inventory decisions",
-  "The consistent five-star reputation of Shahab & Sons is no accident, it is the result of decades of commitment to genuine products and honest trade",
-  "Shahab & Sons mein staff kisi bhi question ka answer honestly dete hain, naye business walo ko poora support karte hain",
-  "Shahab & Sons ka sabse bada quality yeh hai ki woh kabhi bhi kisi customer ko duplicate product nahi bechte, reputation unke liye sabse upar hai",
-  "Every visit to Shahab & Sons reinforces why this store has survived and thrived for over seven decades in a competitive wholesale market",
-  "The service culture at Shahab & Sons is built on honesty, patience, and a genuine desire to see their buyers succeed in their own businesses",
-  "Shahab & Sons has earned the loyalty of shopkeepers from across eastern UP and Bihar by consistently delivering on every promise they make",
-  "The way Shahab & Sons handles large bulk orders with the same care and attention as small purchases speaks to the professionalism of every staff member there",
-  "Visiting Shahab & Sons feels like visiting a trusted advisor rather than a supplier, and that relationship is what makes their customers return for decades",
-  "The after-purchase support at Shahab & Sons, including product exchange and market advice, is something no other wholesaler in Varanasi provides",
-  "Shahab & Sons has a reputation in the Varanasi wholesale market that has taken 75 years to build and it shows in every single interaction",
-  "The owner of Shahab & Sons personally ensures that product quality standards are never compromised regardless of market pressure or supply fluctuations",
-  "Shopkeepers who buy from Shahab & Sons consistently report that their customer satisfaction levels improve because the product authenticity is immediately noticed",
-  "Shahab & Sons ka store layout bhi bahut organized hai, jisse poore purchase mein time nahi lagta aur sab kuch smoothly milta rehta hai",
-  "Inka after-sales support aur exchange policy dono genuinely customer-friendly hain, jo market mein rare hai aur Shahab & Sons ko alag banata hai",
-  "Decades of trust built by Shahab & Sons in the cosmetics wholesale market of Varanasi is reflected in the fact that their regulars span three generations of shop owners",
-  "The zero-tolerance policy on counterfeit products at Shahab & Sons has made them the most trusted name in cosmetics wholesale across the entire Purvanchal belt",
-  "What makes Shahab & Sons truly exceptional is not just the products but the integrity with which every transaction is handled, every single time"
-];
-
-// Utility functions
-function rnd() { return Math.random(); }
-function pick(a) { return a[Math.floor(rnd() * a.length)]; }
-
-function compose(cat) {
-  var t = Math.floor(rnd() * 16);
-
-  if (cat === 'wholesale') {
-    if (t < 4)  return pick(W_OPENERS) + ". " + pick(W_DETAILS) + ". " + pick(G_SERVICE) + ".";
-    if (t < 7)  return pick(W_OPENERS) + ". " + pick(W_HI) + ".";
-    if (t < 10) return pick(W_HI) + ". " + pick(W_DETAILS) + ". " + pick(G_SERVICE) + ".";
-    if (t < 13) return pick(W_OPENERS) + ". " + pick(G_SERVICE) + ".";
-    return pick(W_DETAILS) + ". " + pick(G_SERVICE) + ". Best cosmetic wholesaler in Varanasi is definitely Shahab & Sons.";
+const REVIEW_DATA = {
+  en: {
+    wholesale: {
+      openers: [
+        "Shahab & Sons in Sultan Katra is the first name that comes to mind when starting a new cosmetic retail business in Varanasi.",
+        "Visited Shahab & Sons for bulk purchases and the wholesale selection genuinely rivals the biggest distributors in UP.",
+        "Was looking for a reliable supplier to open a new shop and Shahab & Sons had everything in stock with complete authenticity.",
+        "After trying three different wholesalers in Varanasi, I finally found the one that never lets me down. Shahab & Sons.",
+        "A colleague recommended Shahab & Sons for wholesale and I honestly wish I had found them years earlier.",
+        "Came to Sultan Katra for the first time specifically to visit Shahab & Sons and left with a full truckload of stock.",
+        "Every serious cosmetics retailer in eastern UP eventually ends up at Shahab & Sons, and for very good reason.",
+        "My distributor from Lucknow told me about Shahab & Sons and after one visit I switched my entire sourcing here.",
+        "I drove from Gorakhpur to source from Shahab & Sons and the trip was absolutely worth every kilometre.",
+        "As someone who has been in cosmetics retail for twelve years, I can say Shahab & Sons is the most professional wholesaler I have dealt with.",
+        "Started my cosmetics shop six months ago and Shahab & Sons has been my backbone supplier from day one.",
+        "Heard about Shahab & Sons at a trade fair and immediately made the trip to Varanasi. Best business decision of the year.",
+        "Three generations of my family have run beauty shops and Shahab & Sons is now our exclusive wholesale partner.",
+        "Was skeptical at first about switching wholesalers but Shahab & Sons won me over completely on the first order.",
+        "The sheer scale of Shahab & Sons' warehouse is impressive. They carry everything a serious retailer could ever need.",
+        "I had been searching for a trustworthy cosmetics wholesaler for over two years before a friend pointed me to Shahab & Sons.",
+        "Shahab & Sons was recommended by three separate retailers at a regional trade event. That kind of word-of-mouth speaks for itself.",
+        "Running a cosmetics distribution network across four districts, Shahab & Sons is the single most reliable upstream source I use.",
+        "Opened my shop in a small town near Varanasi and Shahab & Sons has made sure my shelves are never empty.",
+        "The reputation of Shahab & Sons in this region is truly earned. I came with high expectations and they were exceeded.",
+        "My business partner and I sourced from a dozen wholesalers before settling permanently on Shahab & Sons.",
+        "I was introduced to Shahab & Sons through an industry group and the introduction changed how I run my retail business entirely.",
+        "Every retailer I know in Purvanchal has eventually made their way to Shahab & Sons. The quality keeps people coming back.",
+        "Spent years dealing with unreliable suppliers before discovering Shahab & Sons. The consistency here is genuinely remarkable.",
+        "From Allahabad to Azamgarh, traders talk about Shahab & Sons as the gold standard for cosmetics wholesale."
+      ],
+      details: [
+        "The wholesale rates are so competitive that they easily beat online platforms, giving retail owners excellent margins.",
+        "The free packaging service they offer for bulk goods is something very few wholesale shops do, and it saves so much hassle.",
+        "Every product at Shahab & Sons is 100 percent genuine, which completely eliminates grey-market uncertainty.",
+        "Their inventory system means you will almost never hear the words 'out of stock' from their team.",
+        "The billing is fully transparent with no hidden charges, which makes accounting for my shop so much easier.",
+        "They stock every major brand from Lakme to Loreal to Nivea, all under one roof with verified authenticity.",
+        "The staff genuinely know the products and will tell you honestly which items are moving fastest in the market.",
+        "Bulk discounts are structured very fairly and even medium-sized orders get meaningful price advantages.",
+        "Returns and replacements are handled without any argument, which is extremely rare in wholesale trade.",
+        "The shop is organized so well that finding any specific product takes minutes, not the usual hour of searching.",
+        "They keep track of new product launches and ensure fresh arrivals are stocked before anyone else in Varanasi.",
+        "Credit facilities for trusted customers are genuinely available and the terms are among the best I have seen.",
+        "The entire team from owner to staff operates with a level of professionalism that is rare in this trade.",
+        "Same-day dispatch for orders placed before noon has saved my business on multiple urgent occasions.",
+        "Their knowledge of which products sell in rural markets versus urban markets is genuinely useful business intelligence.",
+        "I have never received an expired or damaged product in three years of sourcing from Shahab & Sons.",
+        "The price lists are updated regularly and shared proactively, so I always know what to budget for my orders.",
+        "Even during peak festival season when other wholesalers run out, Shahab & Sons maintains consistent stock levels.",
+        "The owner takes time to personally understand your business needs and gives advice that actually helps you grow.",
+        "Order accuracy is exceptional. In dozens of large orders I have not once received the wrong item.",
+        "The warehouse layout is logical and efficient. Any staff member can find a product instantly regardless of how busy the floor is.",
+        "They have a proper quality-check process before items are packed, which means what you receive matches what you ordered exactly.",
+        "Communication is prompt and clear. If there is ever a stock issue I am told immediately and offered alternatives.",
+        "Shahab & Sons carries niche and regional brands alongside national names, which gives my shop a genuinely differentiated range.",
+        "The loading facilities at the shop are well managed, saving significant time when handling large bulk orders.",
+        "I have referred many new retailers here and not one has come back to me with a complaint about the experience.",
+        "The business guidance offered informally by the senior staff has saved me from several costly purchasing mistakes.",
+        "Their seasonal stocking patterns are very well planned, so popular festival products are available weeks before the rush.",
+        "Packaging materials are of high quality and suited for transport over long distances without damage.",
+        "The team understands the economics of small retail and does not push you toward unnecessarily large orders."
+      ],
+      closers: [
+        "Best cosmetic wholesaler in Varanasi, no doubt.",
+        "Highly recommend Shahab & Sons to anyone looking for genuine wholesale cosmetics.",
+        "The owner's business guidance is an invaluable bonus for any new shop owner.",
+        "If you are serious about your cosmetics business, this is the only wholesaler you need.",
+        "Five stars is not enough. Shahab & Sons deserves ten.",
+        "My business grew thirty percent after switching to Shahab & Sons and I credit their quality and pricing.",
+        "I recommend them to every retailer I meet without any hesitation whatsoever.",
+        "Loyal customer for life. There is simply no reason to go anywhere else.",
+        "The trust I have in Shahab & Sons is something I have not found with any other supplier.",
+        "Anyone who wants to build a successful cosmetics retail business should start here.",
+        "Shahab & Sons is not just a supplier. They are a genuine partner in your success.",
+        "After years of searching, I finally found a wholesaler I can fully depend on.",
+        "My only regret is not discovering Shahab & Sons sooner.",
+        "The gold standard of cosmetics wholesale in Varanasi and beyond.",
+        "I tell every new retailer I meet: go to Shahab & Sons first and save yourself months of searching.",
+        "Seventy years of trusted trading and it shows in every interaction. Cannot recommend highly enough.",
+        "My sourcing costs dropped and my customer satisfaction rose the moment I switched to Shahab & Sons.",
+        "There is no substitute for a supplier you can truly trust. Shahab & Sons is that supplier.",
+        "A decade from now I know I will still be sourcing from Shahab & Sons. That is how confident I am.",
+        "The combination of authentic products, fair prices, and genuine service is something you simply do not find everywhere.",
+        "My shop's reputation improved directly because of the quality of products I now source from Shahab & Sons.",
+        "I drive over two hours to source here and would happily drive four. It is that worth it.",
+        "Every rupee spent at Shahab & Sons comes back multiplied through customer satisfaction and repeat business.",
+        "If I had to recommend just one business resource to any new cosmetics retailer, it would be Shahab & Sons without hesitation."
+      ]
+    },
+    parlour: {
+      openers: [
+        "Shahab & Sons is the most reliable destination for beauty parlour supplies in Varanasi.",
+        "Bought my entire beauty parlour setup from Shahab & Sons and the genuine products gave my clients total confidence.",
+        "The professional makeup section at Shahab & Sons has a curated selection that covers every bridal need.",
+        "Running a busy parlour in Varanasi means I need a supplier I can count on. Shahab & Sons has never failed me.",
+        "My parlour has been operating for eight years and the quality upgrade after switching to Shahab & Sons was immediate.",
+        "A senior beautician in my network told me about Shahab & Sons and it completely transformed my supply chain.",
+        "When I was setting up my first parlour I was advised to go to Shahab & Sons. Best advice I ever received.",
+        "For bridal season preparations, Shahab & Sons is the only place I trust to source everything I need.",
+        "I travel from Mirzapur to Varanasi specifically to stock my parlour from Shahab & Sons every month.",
+        "Opened a second parlour branch this year and Shahab & Sons supplied everything from day one without any hiccup.",
+        "The difference in client satisfaction since I started using products from Shahab & Sons has been remarkable.",
+        "Other parlour owners in my area all eventually come to Shahab & Sons. The quality difference is undeniable.",
+        "My clients noticed the improvement in results immediately after I switched my product sourcing to Shahab & Sons.",
+        "For any beauty professional who takes their work seriously, Shahab & Sons is the only logical choice in Varanasi.",
+        "I have been recommending Shahab & Sons to every parlour owner I train and the feedback is always glowing.",
+        "Started my parlour from scratch and Shahab & Sons was there from the very first day with everything I needed.",
+        "Word spreads fast among beauty professionals and Shahab & Sons is always the name being discussed.",
+        "My clients have started asking specifically about the brands I use because the results speak for themselves. All sourced from Shahab & Sons.",
+        "After years of ordering from unreliable suppliers and getting substandard products, Shahab & Sons was a revelation.",
+        "I run a bridal makeup studio and the range available at Shahab & Sons is unlike anything else in this region.",
+        "Three of my beautician friends independently recommended Shahab & Sons before I finally visited. Wish I had gone sooner.",
+        "From skincare to hair colour to nail art, Shahab & Sons covers every category a professional parlour depends on.",
+        "The consistency of product quality from Shahab & Sons means my clients always get reliable results, which builds real loyalty.",
+        "I competed in a regional beauty competition and all my products were sourced from Shahab & Sons. I won first place.",
+        "My parlour serves clients from across the city and they all notice the difference that professional-grade products make."
+      ],
+      details: [
+        "Beauty parlour supplies from foundations to nail paints are available under one roof with a guarantee of zero counterfeit items.",
+        "The premium skincare range here is the right choice for professionals who refuse to compromise on client safety.",
+        "They carry everything from basic daily skincare to full high-end bridal makeup kits.",
+        "Professional-grade hair colour brands that salons actually need are stocked in every shade and formulation.",
+        "The waxing and threading supply range is comprehensive and the quality is visibly superior to market alternatives.",
+        "Nail art supplies here are the most varied I have found anywhere in eastern UP.",
+        "Skincare serums and treatment products used in facials are all authentic and well within expiry dates.",
+        "The bridal kit range covers every skin tone and the team helps you select the right products for your clientele.",
+        "Hair treatment products including keratin, protein treatments, and conditioning ranges are all genuinely professional grade.",
+        "The eyelash and eyebrow product range has expanded dramatically and now covers everything a modern parlour needs.",
+        "Mehendi and bridal accessory supplies are stocked seasonally and always available well before wedding season peaks.",
+        "Staff at Shahab & Sons understand parlour economics and suggest products that balance quality with healthy margins.",
+        "The product knowledge of the team means you get genuine recommendations, not just whatever they want to sell.",
+        "Fragrance and aromatherapy products for spa services are available at rates that make spa menus genuinely profitable.",
+        "I have sourced from shops in Delhi and Mumbai and Shahab & Sons matches them on quality at much better prices.",
+        "The freshness of their stock is evident. I have never had a client react badly to any product sourced here.",
+        "Colour cosmetics are stocked in the latest seasonal shades, keeping my parlour trend-relevant year round.",
+        "The hygiene and sterilization supplies section has everything a professional parlour needs to maintain standards.",
+        "The team keeps up with trends and can tell you what is new and popular before your clients even ask for it.",
+        "Lash extension materials and professional adhesives are stocked in grades suitable for certified professionals.",
+        "The range of professional brushes and applicators is extensive and the quality is noticeably better than generic market options.",
+        "Setting sprays, fixatives, and long-wear products that parlour clients need for events are always well stocked.",
+        "I can complete my entire monthly restocking order in one visit, which saves enormous time compared to sourcing from multiple suppliers.",
+        "The after-sales relationship is strong. If any product does not perform as expected the team addresses it without any difficulty.",
+        "Sunscreen and tinted moisturiser ranges for pre-bridal skincare treatments are comprehensive and all authentic.",
+        "Every brand carried is the real thing. No imitations, no grey-market items, and no stress about what you are putting on your clients.",
+        "Pedicure and manicure consumables are stocked in full professional sets, making it easy to maintain hygiene standards.",
+        "The team flags discontinued products early so I can adjust my orders before running out, which prevents disruption to my clients."
+      ],
+      closers: [
+        "My beauty parlour business relies entirely on Shahab & Sons. Highly recommended.",
+        "For professional parlour supplies in Varanasi, there is simply no better store.",
+        "The trust and product consistency here is simply unmatched locally.",
+        "Every beauty professional in Varanasi should have Shahab & Sons as their primary supplier.",
+        "Client satisfaction at my parlour has never been higher since I made the switch.",
+        "I would not source from anywhere else even if I could. Shahab & Sons has earned my complete loyalty.",
+        "The investment in quality products from Shahab & Sons pays back in client retention and referrals.",
+        "Any parlour owner who has not yet visited Shahab & Sons is missing out significantly.",
+        "My parlour's reputation in the area has grown directly because of the product quality from Shahab & Sons.",
+        "Five stars for product quality, five stars for service, five stars for reliability.",
+        "Shahab & Sons understands what a working beauty professional actually needs and delivers it every time.",
+        "The best business decision I made for my parlour was switching my entire supply chain to Shahab & Sons.",
+        "I have referred over a dozen parlour owners here and every single one has thanked me for the recommendation.",
+        "For genuine professional-grade beauty supplies in Varanasi, Shahab & Sons is in a league of its own.",
+        "My clients are happier, my margins are better, and my stress is lower. All because of Shahab & Sons.",
+        "If you are serious about building a reputation as a skilled beautician, your products need to match your skills. Start at Shahab & Sons.",
+        "I have been in the beauty industry for over a decade and Shahab & Sons is the best supplier I have ever worked with.",
+        "The reliability alone is worth everything. When I place an order I know exactly what I will receive.",
+        "My client retention improved measurably after I upgraded my supplies through Shahab & Sons.",
+        "The quality of results I deliver has gone up, and my clients notice. Shahab & Sons made that possible.",
+        "I recommend this shop to every beauty student who asks me where to buy professional supplies.",
+        "Shahab & Sons has made running my parlour smoother, more profitable, and more enjoyable.",
+        "This is the kind of supplier that helps you grow your business, not just fulfil orders.",
+        "For bridal makeup artists especially, Shahab & Sons is simply irreplaceable in this region."
+      ]
+    },
+    fmcg: {
+      openers: [
+        "Shahab & Sons is where I go for all general cosmetics after repeatedly being disappointed by duplicate products elsewhere.",
+        "The FMCG and daily cosmetic section at Shahab & Sons is one of the most comprehensive I have found in Varanasi.",
+        "Could not find a reliable supplier for authentic daily wear cosmetics until I discovered Shahab & Sons.",
+        "My general store's cosmetics section was struggling until I started sourcing everything from Shahab & Sons.",
+        "For everyday consumer cosmetics at wholesale prices, no one in Varanasi comes close to Shahab & Sons.",
+        "I stock a pharmacy cum cosmetics outlet and Shahab & Sons is my go-to for every FMCG cosmetic brand.",
+        "After dealing with duplicate products from other wholesalers, finding Shahab & Sons was a genuine relief.",
+        "My kirana store expanded into cosmetics and Shahab & Sons made that transition completely seamless.",
+        "Running a supermarket means I need consistent FMCG supply and Shahab & Sons delivers every single time.",
+        "I supply to smaller shops in my area and Shahab & Sons is where I source everything for my distribution.",
+        "The FMCG range at Shahab & Sons has grown so much that I now source almost everything from one place.",
+        "As a retailer serving a mixed rural and urban customer base, Shahab & Sons covers every price point I need.",
+        "My cosmetics turnover doubled after I switched my FMCG sourcing entirely to Shahab & Sons.",
+        "Other suppliers kept giving me short-dated stock. Shahab & Sons has never once done that in two years.",
+        "I was recommended Shahab & Sons by my trade association and it has been the most valuable referral I ever received.",
+        "Opened a new retail outlet in a semi-urban area and Shahab & Sons supplied the entire cosmetics section from the start.",
+        "I had wasted months and real money sourcing from unreliable wholesalers before finally arriving at Shahab & Sons.",
+        "The FMCG cosmetics market moves fast but Shahab & Sons keeps pace better than any other supplier I have tried.",
+        "Running a chemist shop with a growing cosmetics section, Shahab & Sons has made inventory management genuinely easy.",
+        "The breadth of brands available at Shahab & Sons means I can satisfy every type of customer who walks through my door.",
+        "I stock a large medical and general store and Shahab & Sons has become my default for every cosmetics reorder.",
+        "Competitive pricing and authentic products together are hard to find. Shahab & Sons manages both without compromise.",
+        "Every quarter I evaluate my suppliers and Shahab & Sons is the one I never have any reason to reconsider.",
+        "My shop caters to budget-conscious and premium customers alike, and Shahab & Sons stocks the full spectrum.",
+        "Three retailers in my locality all switched to Shahab & Sons within the same month after comparing notes. None of us looked back."
+      ],
+      details: [
+        "Every single skincare and daily use product at Shahab & Sons is 100 percent original and properly batch-verified.",
+        "Daily use lipsticks and nail paints are heavily stocked in every current shade, making inventory management easy.",
+        "FMCG products come with proper billing and honest margins, a completely professional wholesale experience.",
+        "The soap, shampoo, and conditioner range covers every major brand at prices that give retailers real profit.",
+        "Face wash and moisturiser stocks are maintained at levels that mean I never have to turn a customer away.",
+        "Sunscreen and skin protection products, a fast growing category, are stocked in depth across all SPF ranges.",
+        "Hair oil and serum brands that customers ask for by name are always available in full quantities here.",
+        "The deodorant and body spray section is one of the most comprehensive I have seen at any wholesaler.",
+        "Baby care and sensitive skin product lines are genuine and I trust them completely for my pharmacy customers.",
+        "Talcum powder, kajal, and everyday colour cosmetics are stocked in quantities that suit any size of retailer.",
+        "The FMCG billing process is fast and accurate, which saves significant time during large ordering sessions.",
+        "Festive season stock arrives at Shahab & Sons well in advance so I never have to scramble for supply.",
+        "Men's grooming products, a growing demand in my area, are stocked comprehensively at Shahab & Sons.",
+        "The herbal and ayurvedic cosmetics range has expanded significantly and moves very fast with my customers.",
+        "Imported cosmetic brands that my urban customers ask for are available here at genuine wholesale prices.",
+        "The stock rotation here is excellent. Products are always fresh and well within comfortable expiry dates.",
+        "Pricing is discussed openly and honestly, and volume discounts kick in at very reasonable order thresholds.",
+        "The team flags upcoming price changes proactively, which helps me plan my purchasing budget in advance.",
+        "Lip care, hand cream, and foot care products that were hard to find from other wholesalers are all well stocked here.",
+        "The eye care cosmetics section, kajal, kohl, eye liner, eye shadow, is comprehensive and all genuine.",
+        "Combo packs and gift sets for festive gifting are available well before the holiday rush, which lets me plan promotions early.",
+        "The team can advise on which products have been selling fastest regionally so I can prioritise my stock selection.",
+        "Compact powders and BB creams in the full shade range are always available, which is not guaranteed elsewhere.",
+        "Stock arrives well packaged with batch numbers clearly visible. Verification is easy and gives complete confidence.",
+        "The range of international brands carried is broader than any competitor I know in this city.",
+        "Cold cream, petroleum jelly, and seasonal care products are stocked in depth ahead of every season.",
+        "The team keeps track of which FMCG products are trending on social media and stocks them before demand peaks.",
+        "I have placed emergency orders late in the day and been told the items will be ready for pickup by morning. That kind of reliability is rare."
+      ],
+      closers: [
+        "The 70-year legacy of this store is entirely justified by their product quality.",
+        "I highly recommend Shahab & Sons for genuine, fresh FMCG stock.",
+        "Pricing is transparent and competitive, giving honest margins to retail owners.",
+        "Shahab & Sons is the most dependable FMCG cosmetics wholesaler I have worked with in my career.",
+        "My store's cosmetics section has never performed better since I made Shahab & Sons my primary supplier.",
+        "For any retailer who values authenticity and fair pricing, Shahab & Sons is the clear choice.",
+        "I have saved significant money and headaches since switching my FMCG sourcing to Shahab & Sons.",
+        "The reliability of supply from Shahab & Sons has allowed me to make confident promises to my customers.",
+        "Every order I have placed with Shahab & Sons has been correct, on time, and exactly as described.",
+        "My profit margins improved meaningfully the moment I consolidated my FMCG sourcing at Shahab & Sons.",
+        "I recommend Shahab & Sons to every retailer I meet who is frustrated with unreliable or fake products.",
+        "The combination of genuine products, fair pricing, and great service makes Shahab & Sons unbeatable.",
+        "Loyal customer for three years and the consistency has never once dropped.",
+        "Shahab & Sons is not just a wholesaler. They are a competitive advantage for any serious retailer.",
+        "The peace of mind that comes with sourcing from Shahab & Sons is worth more than I can express.",
+        "My customers trust me more because they trust the products I sell. That trust starts at Shahab & Sons.",
+        "Switching to Shahab & Sons was one of the best operational decisions I have made for my store.",
+        "The depth of stock here means I can always fulfil what I promise my customers, which protects my shop's reputation.",
+        "Anyone still sourcing FMCG cosmetics from unverified suppliers is taking an unnecessary risk when Shahab & Sons exists.",
+        "The ongoing relationship with Shahab & Sons keeps getting better. They invest in their customers' success.",
+        "My repeat customer rate went up after I started stocking products from Shahab & Sons. The quality keeps people coming back.",
+        "I have tried eight other wholesalers in Varanasi and none compare to Shahab & Sons on any metric that matters.",
+        "Shahab & Sons has genuinely changed what it means to run a cosmetics retail business in this region.",
+        "Fast, accurate, authentic, and fairly priced. That is what every retailer needs and that is exactly what Shahab & Sons delivers."
+      ]
+    }
+  },
+  hi: {
+    wholesale: {
+      openers: [
+        "नयी दुकान खोलने के लिए शहाब एंड संस आये थे, यहाँ ओरिजिनल आइटम और बेस्ट होलसेल रेट मिलता है।",
+        "बिहार से आकर यहाँ से स्टॉक लिया, इनका व्यवहार और फ्री पैकेजिंग फैसिलिटी ने बहुत इम्प्रेस किया।",
+        "आज़मगढ़ से आये थे यह देखने कि इतना नाम क्यों है, और इनकी गाइडेंस ने मुझे गलत खरीदारी से बचा लिया।",
+        "पिछले कई सालों से अलग-अलग होलसेलर से परेशान था, शहाब एंड संस आया तो सारी समस्याएँ खत्म हो गयीं।",
+        "मेरे एक दोस्त ने शहाब एंड संस का नाम बताया था और पहली ही विज़िट में यह मेरा परमानेंट सप्लायर बन गया।",
+        "गाज़ीपुर से खास तौर पर शहाब एंड संस का स्टॉक देखने आया था, वापस जाते समय गाड़ी भरी हुई थी।",
+        "पूर्वांचल में जितने भी सीरियस कॉस्मेटिक रिटेलर हैं वो सभी शहाब एंड संस पर आते हैं।",
+        "लखनऊ के एक डिस्ट्रीब्यूटर ने शहाब एंड संस का रेफरेंस दिया था, अब मेरी पूरी सोर्सिंग यहीं से होती है।",
+        "12 साल से कॉस्मेटिक्स का काम कर रहा हूँ, शहाब एंड संस जैसा प्रोफेशनल होलसेलर मैंने कहीं नहीं देखा।",
+        "जौनपुर से आये थे, सोचा था बस देखकर आएंगे लेकिन इतना अच्छा माल और रेट था कि पूरा ऑर्डर दे दिया।",
+        "छह महीने पहले दुकान खोली थी और शहाब एंड संस पहले दिन से हमारा सबसे भरोसेमंद सप्लायर है।",
+        "एक ट्रेड फेयर में शहाब एंड संस का नाम सुना और सीधे वाराणसी आ गया, यह साल का सबसे अच्छा फैसला था।",
+        "हमारे परिवार की तीन पीढ़ियाँ ब्यूटी शॉप चला रही हैं और अब शहाब एंड संस हमारा एक्सक्लूसिव पार्टनर है।",
+        "पहले झिझक था कि होलसेलर बदलना सही होगा या नहीं, लेकिन पहले ऑर्डर में ही शहाब एंड संस ने मना लिया।",
+        "शहाब एंड संस का गोदाम देखकर ही समझ आ जाता है कि ये वाराणसी का सबसे बड़ा कॉस्मेटिक होलसेलर है।",
+        "दो साल तक सही होलसेलर ढूंढता रहा, एक दोस्त ने शहाब एंड संस का नाम बताया और तलाश खत्म हो गई।",
+        "चार ज़िलों में कॉस्मेटिक्स सप्लाई करता हूँ और शहाब एंड संस सबसे भरोसेमंद अपस्ट्रीम सोर्स है।",
+        "वाराणसी के पास एक कस्बे में दुकान खोली और शहाब एंड संस ने सुनिश्चित किया कि शेल्फ कभी खाली न रहे।",
+        "शहाब एंड संस की इस इलाके में जो साख है वो वाकई मेहनत से कमाई हुई है, उम्मीदें ऊँची थीं और वो पूरी हुईं।",
+        "मेरे बिज़नेस पार्टनर और मैंने दर्जनों होलसेलर आज़माए, आखिर में शहाब एंड संस पर टिक गए।",
+        "इंडस्ट्री ग्रुप के ज़रिये शहाब एंड संस से जुड़ा और इसने मेरे रिटेल बिज़नेस का तरीका पूरी तरह बदल दिया।",
+        "मैं जानता हूँ कि पूर्वांचल के हर रिटेलर ने आखिरकार शहाब एंड संस तक का रास्ता ढूंढा है। क्वालिटी लोगों को वापस खींचती है।",
+        "अनरिलायबल सप्लायरों से वर्षों जूझने के बाद शहाब एंड संस मिला, यहाँ की कंसिस्टेंसी सच में कमाल है।",
+        "इलाहाबाद से लेकर आज़मगढ़ तक व्यापारी शहाब एंड संस को कॉस्मेटिक होलसेल का गोल्ड स्टैंडर्ड बताते हैं।",
+        "एक रीजनल ट्रेड इवेंट में तीन अलग-अलग रिटेलर्स ने शहाब एंड संस की सिफारिश की, इस तरह की वर्ड ऑफ माउथ खुद बोलती है।"
+      ],
+      details: [
+        "पिछले 15 साल से मेरी दुकान का सामान शहाब एंड संस से ही आ रहा है, हमेशा फ्रेश स्टॉक और असली प्रोडक्ट मिलता है।",
+        "जखनियाँ और सादात से बहुत लोग यहाँ आते हैं क्योंकि यहाँ ऑनलाइन से भी सस्ते रेट्स पर ओरिजिनल प्रोडक्ट मिलते हैं।",
+        "फ्री पैकेजिंग सर्विस इतनी अच्छी है कि दूसरे ज़िले में सामान ले जाने में कोई टेंशन नहीं होती।",
+        "हर बड़े ब्रांड का माल, लैक्मे से लेकर लोरियल तक, सब एक ही जगह मिल जाता है और सब ओरिजिनल होता है।",
+        "बिलिंग बिल्कुल साफ और ट्रांसपेरेंट है, कोई छुपा हुआ चार्ज नहीं जो बाद में परेशान करे।",
+        "स्टाफ को प्रोडक्ट की इतनी जानकारी है कि वो बता देते हैं कौन सा आइटम मार्केट में सबसे ज़्यादा चल रहा है।",
+        "बल्क डिस्काउंट का स्ट्रक्चर बहुत फेयर है और मीडियम साइज़ के ऑर्डर पर भी अच्छा फायदा मिलता है।",
+        "रिटर्न और रिप्लेसमेंट बिना किसी बहसबाज़ी के हो जाता है, यह बात इस ट्रेड में बहुत रेयर है।",
+        "दुकान इतनी व्यवस्थित है कि कोई भी प्रोडक्ट ढूंढने में घंटे नहीं, बस मिनट लगते हैं।",
+        "नई लॉन्च का स्टॉक सबसे पहले यहाँ आता है, इसलिए मेरी दुकान हमेशा लेटेस्ट प्रोडक्ट्स से भरी रहती है।",
+        "भरोसेमंद कस्टमर को क्रेडिट फैसिलिटी भी मिलती है और टर्म्स बाकी होलसेलर्स से कहीं बेहतर हैं।",
+        "मालिक से लेकर स्टाफ तक, सबका व्यवहार इतना प्रोफेशनल है जो इस ट्रेड में शायद ही कहीं देखने को मिले।",
+        "दोपहर से पहले ऑर्डर दो तो उसी दिन डिस्पैच हो जाता है, कई बार इसने मेरी दुकान बचाई है।",
+        "तीन साल में एक बार भी एक्सपायर या खराब माल नहीं मिला, यह भरोसा बहुत बड़ी बात है।",
+        "प्राइस लिस्ट नियमित अपडेट होती है और प्रोएक्टिवली शेयर की जाती है, इससे बजट प्लानिंग आसान हो जाती है।",
+        "त्योहारी सीज़न में जब बाकी होलसेलर का स्टॉक खत्म हो जाता है, शहाब एंड संस का स्टॉक बरकरार रहता है।",
+        "ग्रामीण और शहरी दोनों मार्केट के लिए कौन सा प्रोडक्ट चलेगा, इसकी इनकी समझ बेजोड़ है।",
+        "इनके यहाँ से सामान लेने के बाद मुझे कभी कोई कस्टमर कम्प्लेंट नहीं मिली।",
+        "मालिक साहब समय निकालकर आपके बिज़नेस की ज़रूरतें समझते हैं और ऐसी सलाह देते हैं जो सच में काम आती है।",
+        "ऑर्डर एक्युरेसी कमाल की है, दर्जनों बड़े ऑर्डर में एक बार भी गलत आइटम नहीं मिला।",
+        "वेयरहाउस का लेआउट इतना लॉजिकल है कि कोई भी स्टाफ मेंबर तुरंत कोई भी प्रोडक्ट ढूंढ सकता है।",
+        "पैकिंग से पहले प्रॉपर क्वालिटी चेक होती है, इसलिए जो ऑर्डर किया वही बिल्कुल सही मिलता है।",
+        "कम्युनिकेशन प्रॉम्प्ट और क्लियर है, अगर कभी स्टॉक इश्यू हो तो तुरंत बताते हैं और विकल्प देते हैं।",
+        "शहाब एंड संस पर नैशनल ब्रांड के साथ निच और रीजनल ब्रांड भी मिलते हैं, जिससे मेरी दुकान की रेंज अलग दिखती है।",
+        "लोडिंग फैसिलिटी बहुत व्यवस्थित है, बड़े बल्क ऑर्डर में भी काफी समय बचता है।",
+        "सीज़नल स्टॉकिंग पैटर्न बहुत अच्छे से प्लान किया जाता है, फेस्टिव प्रोडक्ट्स रश से हफ्तों पहले उपलब्ध होते हैं।",
+        "पैकेजिंग मटेरियल हाई क्वालिटी का है जो लंबी दूरी पर ट्रांसपोर्ट में भी माल को सुरक्षित रखता है।",
+        "टीम छोटे रिटेल की इकोनॉमिक्स समझती है और ज़रूरत से बड़े ऑर्डर के लिए कभी दबाव नहीं डालती।"
+      ],
+      closers: [
+        "शहाब एंड संस में स्टाफ पूरा सपोर्ट करते हैं, वाराणसी का बेस्ट होलसेलर।",
+        "इनका 70 साल का एक्सपीरियंस साफ़ दिखता है, बहुत ही भरोसेमंद दुकान है।",
+        "नए बिज़नेस वालों के लिए शहाब एंड संस से बेहतर जगह कोई नहीं है।",
+        "जो भी कॉस्मेटिक्स का बिज़नेस करना चाहता है, उसे पहले शहाब एंड संस ज़रूर आना चाहिए।",
+        "पाँच स्टार भी कम लगता है, शहाब एंड संस दस स्टार का हकदार है।",
+        "शहाब एंड संस से जुड़ने के बाद मेरा बिज़नेस तीस परसेंट बढ़ा है।",
+        "मैं जितने भी रिटेलर्स से मिलता हूँ सभी को शहाब एंड संस का नाम ज़रूर बताता हूँ।",
+        "ज़िन्दगी भर का कस्टमर हूँ, कहीं और जाने की कोई वजह नहीं है।",
+        "इनपर जितना भरोसा है वो किसी और सप्लायर पर कभी नहीं हुआ।",
+        "मेरी एकमात्र शिकायत यह है कि इन्हें पहले क्यों नहीं ढूंढा।",
+        "वाराणसी और पूरे पूर्वांचल में कॉस्मेटिक होलसेल का गोल्ड स्टैंडर्ड।",
+        "हर नए रिटेलर को मेरी सलाह है, पहले शहाब एंड संस जाओ, महीनों की तलाश बच जाएगी।",
+        "शहाब एंड संस सिर्फ सप्लायर नहीं है, यह आपके बिज़नेस का असली पार्टनर है।",
+        "बरसों की तलाश के बाद एक ऐसा होलसेलर मिला जिसपर पूरी तरह भरोसा किया जा सके।",
+        "इनसे जुड़ने के बाद मुझे कभी पीछे मुड़कर नहीं देखना पड़ा।",
+        "सत्तर साल की विरासत और हर इंटरेक्शन में वो दिखती है। इससे बेहतर सिफारिश और क्या होगी।",
+        "सोर्सिंग कॉस्ट घटी और कस्टमर सैटिस्फैक्शन बढ़ी जैसे ही शहाब एंड संस पर स्विच किया।",
+        "एक ऐसे सप्लायर का कोई विकल्प नहीं जिसपर आप सच में भरोसा कर सकें। शहाब एंड संस वही सप्लायर है।",
+        "दस साल बाद भी मैं शहाब एंड संस से ही सोर्स कर रहा हूँगा, इतना यकीन है मुझे।",
+        "ओरिजिनल प्रोडक्ट, फेयर प्राइस और अच्छी सर्विस का कॉम्बिनेशन हर जगह नहीं मिलता।",
+        "मेरी दुकान की साख सीधे उन प्रोडक्ट्स की वजह से बनी है जो मैं अब शहाब एंड संस से लेता हूँ।",
+        "दो घंटे से ज़्यादा ड्राइव करके आता हूँ और हर बार सोचता हूँ कि यह बिल्कुल सही था।",
+        "शहाब एंड संस पर खर्च किया हर रुपया कस्टमर सैटिस्फैक्शन के ज़रिये कई गुना वापस आता है।",
+        "किसी भी नए कॉस्मेटिक रिटेलर को मैं सिर्फ एक चीज़ बताऊंगा, बिना झिझक के शहाब एंड संस जाओ।"
+      ]
+    },
+    parlour: {
+      openers: [
+        "ब्यूटी पार्लर का सारा सामान शहाब एंड संस से लिया, सब ओरिजिनल निकला और क्लाइंट्स का रिस्पांस बहुत अच्छा है।",
+        "ब्राइडल मेकअप किट के लिए शहाब एंड संस बेस्ट जगह है, सारे ब्रांडेड आइटम एक ही जगह मिल गए।",
+        "चुनार से वाराणसी आयी थी पार्लर का सामान लेने, इनकी वैरायटी और रेट्स ने बहुत खुश कर दिया।",
+        "आठ साल से पार्लर चला रही हूँ और शहाब एंड संस से जुड़ने के बाद प्रोडक्ट क्वालिटी में जो फर्क आया वो साफ दिखा।",
+        "मेरी एक सीनियर ब्यूटीशियन ने शहाब एंड संस का नाम बताया था और इससे मेरी पूरी सप्लाई चेन बदल गई।",
+        "जब पहला पार्लर खोला था तो किसी ने शहाब एंड संस जाने की सलाह दी, अब तक की सबसे अच्छी सलाह थी।",
+        "शादी सीज़न की तैयारी के लिए शहाब एंड संस ही एक भरोसेमंद जगह है जहाँ सब कुछ एक साथ मिलता है।",
+        "मिर्ज़ापुर से हर महीने वाराणसी आती हूँ सिर्फ शहाब एंड संस से पार्लर का सामान लेने के लिए।",
+        "इस साल दूसरा पार्लर खोला और शहाब एंड संस ने पहले दिन से पूरा सामान बिना किसी दिक्कत के दिया।",
+        "शहाब एंड संस का सामान यूज़ करने के बाद क्लाइंट्स की संतुष्टि में जो बदलाव आया वो काबिले तारीफ है।",
+        "मेरे आसपास की सभी पार्लर वाली बहनें अब शहाब एंड संस आती हैं, क्वालिटी का फर्क सबको दिखता है।",
+        "जब से शहाब एंड संस से सामान लेना शुरू किया, क्लाइंट्स ने खुद फर्क नोटिस किया और तारीफ की।",
+        "जो ब्यूटी प्रोफेशनल अपने काम को सीरियसली लेते हैं उनके लिए शहाब एंड संस ही सही जगह है।",
+        "मैं जितनी भी नई ब्यूटीशियन को ट्रेन करती हूँ उन्हें शहाब एंड संस का नाम ज़रूर बताती हूँ।",
+        "दिल्ली और मुंबई के होलसेलर से भी सामान लिया है, शहाब एंड संस उनकी क्वालिटी को बेहतर रेट पर मैच करता है।",
+        "शुरुआत से ही पार्लर के लिए शहाब एंड संस ने सब कुछ दिया, पहले दिन से ही इनपर भरोसा हो गया।",
+        "ब्यूटी प्रोफेशनल्स के बीच बात तेज़ी से फैलती है और शहाब एंड संस का नाम हमेशा चर्चा में रहता है।",
+        "मेरे क्लाइंट्स अब खास तौर पर उन ब्रांड्स के बारे में पूछने लगे हैं जो मैं यूज़ करती हूँ, नतीजे खुद बोलते हैं। सब शहाब एंड संस से।",
+        "अनरिलायबल सप्लायरों से बरसों जूझने के बाद शहाब एंड संस मिला तो सच में राहत मिली।",
+        "ब्राइडल मेकअप स्टूडियो चलाती हूँ और शहाब एंड संस में जो रेंज है वो इस इलाके में कहीं नहीं है।",
+        "तीन ब्यूटीशियन दोस्तों ने अलग-अलग शहाब एंड संस की सिफारिश की थी, काश पहले ही जाती।",
+        "स्किनकेयर से हेयर कलर से नेल आर्ट तक, शहाब एंड संस हर वो कैटेगरी कवर करता है जिसपर एक पार्लर निर्भर है।",
+        "प्रोडक्ट क्वालिटी की कंसिस्टेंसी की वजह से क्लाइंट्स को हर बार भरोसेमंद नतीजे मिलते हैं, जो सच्ची लॉयल्टी बनाती है।",
+        "एक रीजनल ब्यूटी कॉम्पिटीशन में हिस्सा लिया था और सारे प्रोडक्ट शहाब एंड संस से लिए थे। पहला इनाम मिला।",
+        "मेरे पार्लर में पूरे शहर से क्लाइंट आती हैं और सभी प्रोफेशनल-ग्रेड प्रोडक्ट्स का फर्क नोटिस करती हैं।"
+      ],
+      details: [
+        "यहाँ प्रोफेशनल ब्रशेस और नेल पेंट की वैरायटी इतनी बड़ी है कि किसी मेट्रो सिटी जाने की ज़रूरत नहीं पड़ती।",
+        "पार्लर के लिए जो भी नया ब्रांड मार्केट में आता है, वो सबसे पहले शहाब एंड संस पर मिलता है।",
+        "फाउंडेशन और मेकअप किट का इतना बड़ा कलेक्शन मैंने बनारस में कहीं और नहीं देखा।",
+        "हेयर कलर के सभी शेड्स और फॉर्मूलेशन पूरी मात्रा में मिलते हैं, किसी भी सैलून की ज़रूरत पूरी हो जाती है।",
+        "वैक्सिंग और थ्रेडिंग का सामान यहाँ जो मिलता है वो बाकी मार्केट से क्वालिटी में साफ बेहतर है।",
+        "नेल आर्ट सप्लाइज़ का कलेक्शन पूरे पूर्वी यूपी में सबसे बड़ा शायद यहीं है।",
+        "फेशियल में यूज़ होने वाले सीरम और ट्रीटमेंट प्रोडक्ट्स सब ओरिजिनल हैं और एक्सपायरी बिल्कुल ठीक है।",
+        "ब्राइडल किट हर स्किन टोन के लिए उपलब्ध है और टीम सही प्रोडक्ट चुनने में सच में मदद करती है।",
+        "हेयर ट्रीटमेंट प्रोडक्ट्स, केराटिन, प्रोटीन, कंडीशनिंग, सब प्रोफेशनल ग्रेड के हैं।",
+        "आईलैश और आईब्रो प्रोडक्ट की रेंज काफी बड़ी हो गई है और मॉडर्न पार्लर की हर ज़रूरत कवर होती है।",
+        "मेहंदी और ब्राइडल एक्सेसरीज़ शादी सीज़न से पहले ही स्टॉक में आ जाती हैं, कभी कमी नहीं पड़ती।",
+        "स्टाफ पार्लर इकोनॉमिक्स समझता है और ऐसे प्रोडक्ट सुझाता है जो क्वालिटी और मार्जिन दोनों बैलेंस करें।",
+        "यहाँ से जो सामान मिलता है उसकी फ्रेशनेस साफ दिखती है, कभी कोई क्लाइंट रिएक्शन नहीं हुई।",
+        "कलर कॉस्मेटिक्स के लेटेस्ट सीज़नल शेड्स हमेशा स्टॉक में रहते हैं, पार्लर ट्रेंड में रहता है।",
+        "हाइजीन और स्टेरिलाइज़ेशन सप्लाइज़ का पूरा सेक्शन है जो किसी भी प्रोफेशनल पार्लर को चाहिए होता है।",
+        "स्पा सर्विसेज़ के लिए फ्रेगरेंस और अरोमाथेरेपी प्रोडक्ट्स ऐसे रेट पर मिलते हैं जो मेनू को प्रॉफिटेबल बनाते हैं।",
+        "इनसे सामान लेने के बाद मुझे कभी किसी क्लाइंट से कोई शिकायत नहीं सुनी।",
+        "पार्लर का हर सामान, फाउंडेशन से लेकर नेल पेंट तक, बिना किसी मिलावट के यहाँ मिलता है।",
+        "टीम ट्रेंड्स पर नज़र रखती है और बता सकती है कि क्या नया और पॉपुलर है इससे पहले कि क्लाइंट माँगें।",
+        "लैश एक्सटेंशन मटेरियल और प्रोफेशनल एडहेसिव सर्टिफाइड प्रोफेशनल्स के लिए सही ग्रेड में उपलब्ध हैं।",
+        "प्रोफेशनल ब्रश और एप्लीकेटर की रेंज व्यापक है और क्वालिटी जेनेरिक मार्केट ऑप्शन से साफ बेहतर है।",
+        "सेटिंग स्प्रे, फिक्सेटिव और लॉन्ग-वेयर प्रोडक्ट्स जो पार्लर क्लाइंट्स को इवेंट्स के लिए चाहिए, हमेशा स्टॉक में हैं।",
+        "मेरा पूरा मंथली रिस्टॉकिंग ऑर्डर एक विज़िट में पूरा हो जाता है, कई सप्लायरों से सोर्स करने की तुलना में बहुत समय बचता है।",
+        "आफ्टर-सेल्स रिलेशनशिप मज़बूत है, कोई प्रोडक्ट उम्मीद के मुताबिक नहीं चला तो टीम बिना किसी झंझट के मामला सुलझाती है।",
+        "प्री-ब्राइडल स्किनकेयर ट्रीटमेंट के लिए सनस्क्रीन और टिंटेड मॉइस्चराइज़र की रेंज कम्प्रीहेंसिव और ओरिजिनल है।",
+        "यहाँ जो भी ब्रांड है वो असली है, कोई नकल नहीं, कोई ग्रे-मार्केट आइटम नहीं और क्लाइंट की स्किन पर क्या लगा रहे हैं इसकी कोई टेंशन नहीं।",
+        "पेडीक्योर और मेनीक्योर कंज़्यूमेबल्स पूरे प्रोफेशनल सेट्स में मिलते हैं जिससे हाइजीन स्टैंडर्ड मेंटेन करना आसान है।",
+        "टीम डिसकंटीन्यू होने वाले प्रोडक्ट्स की जल्दी जानकारी देती है ताकि मैं ऑर्डर एडजस्ट कर सकूं।"
+      ],
+      closers: [
+        "यहाँ कॉस्मेटिक्स की क्वालिटी से कभी कॉम्प्रोमाइज नहीं होता, फुल्ली रिकमेंडेड।",
+        "पार्लर का बिज़नेस शुरू करने के लिए ये दुकान बेस्ट है।",
+        "इनकी ऑथेंटिसिटी और सर्विस सच में बहुत बढ़िया है।",
+        "वाराणसी की हर ब्यूटी प्रोफेशनल के लिए शहाब एंड संस प्राइमरी सप्लायर होना चाहिए।",
+        "शहाब एंड संस से जुड़ने के बाद क्लाइंट सैटिस्फैक्शन कभी इतनी अच्छी नहीं थी।",
+        "क्वालिटी प्रोडक्ट्स में निवेश का फायदा क्लाइंट रिटेंशन और रेफरल्स में साफ दिखता है।",
+        "जो पार्लर वाले अभी तक शहाब एंड संस नहीं आए हैं वो बहुत कुछ मिस कर रहे हैं।",
+        "मेरे पार्लर की लोकल रेपुटेशन शहाब एंड संस के प्रोडक्ट्स की वजह से बनी है।",
+        "प्रोडक्ट क्वालिटी को पाँच स्टार, सर्विस को पाँच स्टार, रिलायबिलिटी को पाँच स्टार।",
+        "शहाब एंड संस समझता है कि एक वर्किंग ब्यूटी प्रोफेशनल को क्या चाहिए और हर बार देता है।",
+        "दर्जन से ज़्यादा पार्लर ऑनर्स को यहाँ भेजा है और हर एक ने शुक्रिया अदा किया।",
+        "वाराणसी में प्रोफेशनल ब्यूटी सप्लाइज़ के लिए शहाब एंड संस का कोई मुकाबला नहीं।",
+        "क्लाइंट्स खुश हैं, मार्जिन बेहतर है और टेंशन कम है, सब शहाब एंड संस की वजह से।",
+        "पार्लर के लिए जो सबसे अच्छा बिज़नेस डिसीज़न मैंने लिया वो शहाब एंड संस से जुड़ना था।",
+        "इनपर जितना भरोसा है उतना किसी और सप्लायर पर कभी नहीं हुआ।",
+        "अगर आप एक कुशल ब्यूटीशियन के रूप में अपनी पहचान बनाना चाहती हैं तो आपके प्रोडक्ट्स भी उतने ही अच्छे होने चाहिए। शहाब एंड संस से शुरुआत करें।",
+        "दस साल से ज़्यादा इंडस्ट्री में हूँ और शहाब एंड संस सबसे अच्छा सप्लायर है जिसके साथ काम किया।",
+        "रिलायबिलिटी अकेले ही सब कुछ कह देती है। ऑर्डर देने के बाद मुझे पता होता है कि क्या मिलेगा।",
+        "शहाब एंड संस से जुड़ने के बाद मेरी क्लाइंट रिटेंशन रेट ध्यान देने योग्य रूप से बढ़ी है।",
+        "मेरे काम की क्वालिटी बढ़ी है और क्लाइंट्स नोटिस करती हैं। यह शहाब एंड संस की वजह से संभव हुआ।",
+        "जो ब्यूटी स्टूडेंट पूछती हैं कि प्रोफेशनल सप्लाइज़ कहाँ से खरीदें, मैं उन्हें यही दुकान बताती हूँ।",
+        "शहाब एंड संस ने मेरे पार्लर चलाने को और स्मूद, प्रॉफिटेबल और आनंददायक बना दिया है।",
+        "यह उस तरह का सप्लायर है जो आपके बिज़नेस को बढ़ने में मदद करता है, सिर्फ ऑर्डर पूरे नहीं करता।",
+        "ब्राइडल मेकअप आर्टिस्ट के लिए तो शहाब एंड संस इस इलाके में बस बेमिसाल है।"
+      ]
+    },
+    fmcg: {
+      openers: [
+        "डेली यूज़ के कॉस्मेटिक्स और FMCG प्रोडक्ट्स के लिए शहाब एंड संस से बेहतर रेट पूरे बनारस में नहीं है।",
+        "जनरल आइटम्स का स्टॉक हमेशा फ्रेश रहता है, एक्सपायरी डेट की कभी कोई दिक्कत नहीं आयी।",
+        "मैं गाज़ीपुर से हूँ और FMCG के लिए हमेशा शहाब एंड संस पर ही ट्रस्ट किया है।",
+        "मेरी जनरल शॉप का कॉस्मेटिक्स सेक्शन शहाब एंड संस से जुड़ने के बाद पूरी तरह बदल गया।",
+        "रोज़मर्रा के कॉस्मेटिक्स पर होलसेल रेट में वाराणसी में कोई शहाब एंड संस के करीब नहीं आता।",
+        "दूसरे होलसेलर्स से नकली माल मिलने के बाद शहाब एंड संस मिला तो सच में राहत की साँस आई।",
+        "किराना स्टोर को कॉस्मेटिक्स की तरफ एक्सपेंड किया और शहाब एंड संस ने यह ट्रांज़िशन बिल्कुल आसान कर दिया।",
+        "सुपरमार्केट चलाता हूँ और FMCG की कंसिस्टेंट सप्लाई शहाब एंड संस ही देता है।",
+        "अपने एरिया की छोटी दुकानों को सप्लाई करता हूँ और मेरी पूरी सोर्सिंग शहाब एंड संस से होती है।",
+        "FMCG रेंज इतनी बड़ी हो गई है कि अब लगभग सब कुछ एक ही जगह से मिल जाता है।",
+        "मेरे कस्टमर मिक्स में शहरी और ग्रामीण दोनों हैं और शहाब एंड संस हर प्राइस पॉइंट कवर करता है।",
+        "FMCG सोर्सिंग शहाब एंड संस पर शिफ्ट करने के बाद मेरा कॉस्मेटिक्स टर्नओवर दोगुना हो गया।",
+        "दूसरे सप्लायर शॉर्ट-डेटेड माल देते थे, शहाब एंड संस ने दो साल में एक बार भी ऐसा नहीं किया।",
+        "ट्रेड असोसिएशन ने शहाब एंड संस का नाम दिया था, यह अब तक का सबसे वैल्यूएबल रेफरल साबित हुआ।",
+        "फेस्टिव सीज़न में जब बाजार में माल नहीं मिलता, शहाब एंड संस का स्टॉक हमेशा तैयार रहता है।",
+        "एक नया रिटेल आउटलेट खोला और शहाब एंड संस ने शुरुआत से ही पूरे कॉस्मेटिक्स सेक्शन की सप्लाई की।",
+        "महीनों अनरिलायबल होलसेलर्स पर पैसे और समय बर्बाद किए, आखिरकार शहाब एंड संस तक पहुँचा।",
+        "FMCG कॉस्मेटिक्स मार्केट तेज़ी से बदलती है लेकिन शहाब एंड संस किसी भी दूसरे सप्लायर से बेहतर तरीके से उसका साथ देता है।",
+        "एक केमिस्ट शॉप चलाता हूँ जिसका कॉस्मेटिक्स सेक्शन बढ़ रहा है और शहाब एंड संस ने इन्वेंटरी मैनेजमेंट आसान कर दिया।",
+        "शहाब एंड संस में ब्रांड्स की इतनी चौड़ाई है कि मेरी दुकान पर आने वाले हर टाइप के कस्टमर की ज़रूरत पूरी होती है।",
+        "एक बड़ी मेडिकल और जनरल स्टोर चलाता हूँ और शहाब एंड संस हर कॉस्मेटिक्स रिऑर्डर का डिफॉल्ट बन गया है।",
+        "कॉम्पिटिटिव प्राइसिंग और ओरिजिनल प्रोडक्ट साथ में ढूंढना मुश्किल है, शहाब एंड संस दोनों बिना कॉम्प्रोमाइज के देता है।",
+        "हर तिमाही मैं अपने सप्लायर्स को रिव्यू करता हूँ और शहाब एंड संस एकमात्र है जिसके बारे में सोचने की ज़रूरत ही नहीं पड़ती।",
+        "मेरी दुकान बजट और प्रीमियम दोनों तरह के कस्टमर को सर्व करती है और शहाब एंड संस पूरा स्पेक्ट्रम कवर करता है।",
+        "मेरे इलाके के तीन रिटेलर्स ने एक ही महीने में शहाब एंड संस पर स्विच किया नोट्स की तुलना के बाद, किसी ने पीछे नहीं देखा।"
+      ],
+      details: [
+        "स्किनकेयर प्रोडक्ट्स सब ओरिजिनल मिलते हैं, डुप्लीकेट का कोई डर नहीं होता जब आप यहाँ से शॉपिंग करते हैं।",
+        "नेल पेंट और लिपस्टिक की इतनी वैरायटी है कि दुकान के लिए स्टॉक सेलेक्ट करना बहुत आसान हो जाता है।",
+        "जो भी कस्टमर बेसिक स्किनकेयर मांगता है, उसके लिए इनका स्टॉक हमेशा बेस्ट होता है।",
+        "साबुन, शैम्पू, कंडीशनर, सभी बड़े ब्रांड्स ऐसे रेट पर मिलते हैं जो रिटेलर को सच में प्रॉफिट देते हैं।",
+        "फेस वॉश और मॉइस्चराइज़र का स्टॉक इतना मेंटेन रहता है कि कभी कोई कस्टमर खाली हाथ नहीं जाता।",
+        "सनस्क्रीन और स्किन प्रोटेक्शन, यह तेज़ी से बढ़ती कैटेगरी, हर एसपीएफ रेंज में डेप्थ में स्टॉक है।",
+        "हेयर ऑयल और सीरम के वो ब्रांड्स जो कस्टमर नाम लेकर माँगते हैं, वो सब यहाँ पूरी मात्रा में मिलते हैं।",
+        "डियोड्रेंट और बॉडी स्प्रे का सेक्शन किसी भी होलसेलर से ज़्यादा कम्प्रीहेंसिव है।",
+        "बेबी केयर और सेंसिटिव स्किन प्रोडक्ट्स सब ओरिजिनल हैं, फार्मेसी के कस्टमर के लिए पूरा भरोसा है।",
+        "टेलकम पाउडर, काजल और रोज़ के कलर कॉस्मेटिक्स हर साइज़ के रिटेलर के लिए पर्याप्त मात्रा में हैं।",
+        "FMCG बिलिंग प्रोसेस तेज़ और सटीक है, बड़े ऑर्डर के टाइम काफी समय बचता है।",
+        "मेन्स ग्रूमिंग प्रोडक्ट्स, जो मेरे एरिया में तेज़ी से बिक रहे हैं, यहाँ कम्प्रीहेंसिवली स्टॉक हैं।",
+        "हर्बल और आयुर्वेदिक कॉस्मेटिक्स की रेंज काफी बड़ी हो गई है और मेरे कस्टमर्स में बहुत पॉपुलर है।",
+        "इम्पोर्टेड कॉस्मेटिक ब्रांड्स जो शहरी कस्टमर माँगते हैं, वो भी यहाँ असली होलसेल रेट पर मिलते हैं।",
+        "स्टॉक रोटेशन बहुत अच्छा है, प्रोडक्ट्स हमेशा फ्रेश और कंफर्टेबल एक्सपायरी में रहते हैं।",
+        "प्राइसिंग खुलकर और ईमानदारी से होती है, वॉल्यूम डिस्काउंट बहुत रीज़नेबल थ्रेशोल्ड पर मिलता है।",
+        "टीम आने वाले प्राइस चेंज पहले से बता देती है जिससे खरीदारी का बजट बनाना आसान हो जाता है।",
+        "यहाँ से माल लेने के बाद मुझे कभी कोई कस्टमर कम्प्लेंट नहीं मिली।",
+        "लिप केयर, हैंड क्रीम और फुट केयर प्रोडक्ट्स जो दूसरे होलसेलर्स पर मुश्किल से मिलते थे, यहाँ अच्छे से स्टॉक हैं।",
+        "आई केयर कॉस्मेटिक्स का सेक्शन, काजल, कोहल, आई लाइनर, आई शैडो, कम्प्रीहेंसिव और पूरी तरह ओरिजिनल है।",
+        "फेस्टिव गिफ्टिंग के लिए कॉम्बो पैक्स और गिफ्ट सेट्स हॉलिडे रश से पहले मिलते हैं, जिससे मैं प्रमोशन पहले से प्लान कर सकता हूँ।",
+        "टीम बता सकती है कि रीजनली कौन से प्रोडक्ट्स सबसे तेज़ बिक रहे हैं, जिससे स्टॉक सिलेक्शन में प्राथमिकता तय होती है।",
+        "कॉम्पैक्ट पाउडर और बीबी क्रीम पूरी शेड रेंज में हमेशा उपलब्ध रहती हैं जो हर जगह गारंटीड नहीं होता।",
+        "स्टॉक बैच नंबर के साथ साफ पैक होकर आता है, वेरिफिकेशन आसान है और पूरा भरोसा मिलता है।",
+        "कोल्ड क्रीम, पेट्रोलियम जेली और सीज़नल केयर प्रोडक्ट्स हर सीज़न से पहले भरपूर मात्रा में स्टॉक होते हैं।",
+        "टीम ट्रैक करती है कि सोशल मीडिया पर कौन से FMCG प्रोडक्ट ट्रेंड कर रहे हैं और डिमांड पीक होने से पहले स्टॉक कर लेती है।",
+        "देर शाम इमरजेंसी ऑर्डर दिया और बताया गया कि सुबह तक तैयार मिलेगा। यह स्तर की रिलायबिलिटी कहीं नहीं मिलती।",
+        "प्रोडक्ट लाइन-अप नियमित रूप से अपडेट होता है ताकि मार्केट में जो नया है वो भी यहाँ मिले।"
+      ],
+      closers: [
+        "इनके ट्रांसपेरेंट बिलिंग और अच्छे मार्जिन से दुकानदारी में बहुत फायदा होता है।",
+        "बनारस की सबसे पुरानी और सबसे भरोसेमंद कॉस्मेटिक्स की दुकान।",
+        "मैं सभी रिटेलर्स को शहाब एंड संस से जुड़ने की सलाह दूंगा।",
+        "शहाब एंड संस मेरे करियर में सबसे भरोसेमंद FMCG होलसेलर है।",
+        "शहाब एंड संस को प्राइमरी सप्लायर बनाने के बाद मेरी दुकान का परफॉर्मेंस कभी इतना अच्छा नहीं था।",
+        "जो रिटेलर ऑथेंटिसिटी और फेयर प्राइसिंग को वैल्यू करता है उसके लिए शहाब एंड संस ही सही चॉइस है।",
+        "FMCG सोर्सिंग शहाब एंड संस पर शिफ्ट करने के बाद काफी पैसे और परेशानी बची है।",
+        "शहाब एंड संस की सप्लाई रिलायबिलिटी की वजह से मैं अपने कस्टमर्स से कॉन्फिडेंट वादे कर सकता हूँ।",
+        "तीन साल में हर ऑर्डर सही, समय पर और बिल्कुल वैसा मिला जैसा बताया गया था।",
+        "जो रिटेलर नकली या अनरिलायबल माल से परेशान हैं उन्हें मैं शहाब एंड संस का नाम ज़रूर बताता हूँ।",
+        "ओरिजिनल प्रोडक्ट, फेयर प्राइस और अच्छी सर्विस का जो कॉम्बिनेशन यहाँ है वो कहीं और नहीं।",
+        "तीन साल का लॉयल कस्टमर हूँ और कंसिस्टेंसी में कभी कोई कमी नहीं आई।",
+        "शहाब एंड संस सिर्फ होलसेलर नहीं, किसी भी सीरियस रिटेलर के लिए कॉम्पिटिटिव एडवांटेज है।",
+        "शहाब एंड संस से सोर्सिंग का जो मन का चैन मिलता है उसे शब्दों में बयान करना मुश्किल है।",
+        "इनकी 70 साल की विरासत इनके हर प्रोडक्ट और हर सर्विस में साफ दिखती है।",
+        "मेरे कस्टमर मुझपर ज़्यादा भरोसा करते हैं क्योंकि वो जो प्रोडक्ट्स खरीदते हैं उनपर भरोसा करते हैं। वो भरोसा शहाब एंड संस से शुरू होता है।",
+        "शहाब एंड संस पर स्विच करना मेरी दुकान के लिए सबसे अच्छे ऑपरेशनल फैसलों में से एक था।",
+        "यहाँ स्टॉक की गहराई का मतलब है कि मैं अपने कस्टमर्स से जो वादा करता हूँ वो हमेशा पूरा होता है।",
+        "जो रिटेलर अभी भी अनवेरिफाइड सप्लायरों से FMCG कॉस्मेटिक्स ले रहे हैं वो शहाब एंड संस होते हुए अनावश्यक रिस्क ले रहे हैं।",
+        "शहाब एंड संस के साथ रिश्ता हर गुज़रते दिन बेहतर होता है, वो अपने कस्टमर्स की सफलता में इन्वेस्ट करते हैं।",
+        "शहाब एंड संस से सामान लेने के बाद मेरे रिपीट कस्टमर बढ़े, क्वालिटी लोगों को वापस खींचती है।",
+        "वाराणसी में आठ दूसरे होलसेलर आज़माए, कोई भी शहाब एंड संस की बराबरी नहीं करता किसी भी मायने में।",
+        "शहाब एंड संस ने सच में बदल दिया है कि इस इलाके में कॉस्मेटिक रिटेल बिज़नेस चलाने का मतलब क्या है।",
+        "फास्ट, सटीक, ओरिजिनल और फेयर प्राइस पर। यही हर रिटेलर को चाहिए और यही शहाब एंड संस देता है।"
+      ]
+    }
   }
-  if (cat === 'parlour') {
-    if (t < 4)  return pick(P_OPENERS) + ". " + pick(P_DETAILS) + ". " + pick(G_SERVICE) + ".";
-    if (t < 7)  return pick(P_OPENERS) + ". " + pick(P_HI) + ".";
-    if (t < 10) return pick(P_HI) + ". " + pick(P_DETAILS) + ". " + pick(G_SERVICE) + ".";
-    if (t < 13) return pick(P_OPENERS) + ". " + pick(G_SERVICE) + ".";
-    return pick(P_DETAILS) + ". " + pick(G_SERVICE) + ". Beauty parlour setup ke liye Shahab & Sons is the only address.";
-  }
-  if (cat === 'fmcg') {
-    if (t < 4)  return pick(F_OPENERS) + ". " + pick(F_DETAILS) + ". " + pick(G_SERVICE) + ".";
-    if (t < 7)  return pick(F_OPENERS) + ". " + pick(F_HI) + ".";
-    if (t < 10) return pick(F_HI) + ". " + pick(F_DETAILS) + ". " + pick(G_SERVICE) + ".";
-    if (t < 13) return pick(F_OPENERS) + ". " + pick(G_SERVICE) + ".";
-    return pick(F_DETAILS) + ". " + pick(G_SERVICE) + ". 100 percent original products at Shahab & Sons.";
-  }
+};
 
-  // ALL / DEFAULT
-  var roll = Math.floor(rnd() * 15);
-  if (roll < 3)  return pick(W_OPENERS) + ". " + pick(W_DETAILS) + ". " + pick(G_SERVICE) + ".";
-  if (roll < 5)  return pick(P_OPENERS) + ". " + pick(P_DETAILS) + ". " + pick(G_SERVICE) + ".";
-  if (roll < 7)  return pick(F_OPENERS) + ". " + pick(F_DETAILS) + ". " + pick(G_SERVICE) + ".";
-  if (roll < 9)  return pick(W_HI) + ". " + pick(G_SERVICE) + ".";
-  if (roll < 11) return pick(P_HI) + ". " + pick(G_SERVICE) + ".";
-  if (roll < 13) return pick(F_HI) + ". " + pick(G_SERVICE) + ".";
-  return pick(G_SERVICE) + " " + pick(W_DETAILS) + ".";
+function rnd(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
 }
 
-// Vercel serverless handler
+function compose(cat, lang) {
+  if (lang !== 'en' && lang !== 'hi') lang = 'en';
+
+  if (cat === 'all' || !REVIEW_DATA[lang][cat]) {
+    cat = rnd(['wholesale', 'parlour', 'fmcg']);
+  }
+
+  const data = REVIEW_DATA[lang][cat];
+  return rnd(data.openers) + ' ' + rnd(data.details) + ' ' + rnd(data.closers);
+}
+
 export default function handler(req, res) {
-  // Accepted categories: 'wholesale', 'parlour', 'fmcg', or 'all' (default)
-  const cat = req.query.cat || 'all';
-  const generatedReview = compose(cat);
-  res.status(200).json({ review: generatedReview });
+  const cat  = req.query.cat  || 'all';
+  const lang = req.query.lang || 'en';
+  res.status(200).json({ review: compose(cat, lang) });
 }
