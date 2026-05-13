@@ -606,9 +606,7 @@ html, body {
 
 <script>
 /* ── TRANSLATIONS & STATE ── */
-var reviewLink     = "https://search.google.com/local/writereview?placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ";
-var reviewLinkMaps = "comgooglemaps://?action=reviewplace&placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ";
-var mapsInstallURL = "https://apps.apple.com/app/google-maps/id585027354";
+var reviewLink = "https://g.page/r/CXbhLiUcv2nEEBM/review";
 
 var activeCat    = "all";
 var currentLang  = "en";
@@ -622,7 +620,7 @@ const I18N = {
     cardLabel: "Your Review",
     btnCopy: "Copy & Post on Google", btnCopied: "Copied! Opening Google... ✓",
     hint: "Tap to copy your review, then paste it on Google.",
-    hintCopied: "Paste it in the review box on Google. 📱 (Install Google Maps app for best experience)",
+    hintCopied: "Review copied! Paste it in the Google review box. ✨",
     badge: "Premium Cosmetics Wholesaler in Varanasi",
     qrTitle: "Share This Page", qrDesc: "Scan to instantly open on another device", btnQrClose: "Close"
   },
@@ -632,63 +630,27 @@ const I18N = {
     cardLabel: "आपकी समीक्षा",
     btnCopy: "कॉपी करें और गूगल पर पोस्ट करें", btnCopied: "कॉपी हो गया! गूगल खुल रहा है... ✓",
     hint: "अपनी समीक्षा कॉपी करने के लिए टैप करें, फिर गूगल पर पेस्ट करें।",
-    hintCopied: "इसे गूगल के रिव्यू बॉक्स में पेस्ट करें। 📱 (बेहतर अनुभव के लिए Google Maps ऐप इंस्टॉल करें)",
+    hintCopied: "समीक्षा कॉपी हो गई! गूगल के रिव्यू बॉक्स में पेस्ट करें। ✨",
     badge: "वाराणसी का प्रीमियम कॉस्मेटिक्स होलसेलर",
     qrTitle: "यह पेज शेयर करें", qrDesc: "दूसरे डिवाइस पर तुरंत खोलने के लिए स्कैन करें", btnQrClose: "बंद करें"
   }
 };
 
 /* ── DEVICE DETECTION ── */
-function isIOS() {
-  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-}
 function isAndroid() {
   return /Android/.test(navigator.userAgent);
 }
 
-/* ── OPEN REVIEW LINK (4-layer iOS fallback) ── */
+/* ── OPEN REVIEW LINK ── */
 function openReviewLink() {
-  if (isIOS()) {
-    // Layer 1: native Google Maps deep link
-    var appOpened = false;
-    var fallbackTimer = setTimeout(function() {
-      if (!appOpened) {
-        // Layer 2: maps.google.com universal link
-        var universalAttempted = false;
-        var universalTimer = setTimeout(function() {
-          if (!universalAttempted) {
-            // Layer 3: Chrome iOS scheme
-            var chromeFallTimer = setTimeout(function() {
-              // Layer 4: plain Safari
-              window.location.href = reviewLink;
-            }, 1200);
-            window.addEventListener('blur', function() {
-              clearTimeout(chromeFallTimer);
-            }, { once: true });
-            window.location.href = "googlechrome://search.google.com/local/writereview?placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ";
-          }
-        }, 1200);
-        window.addEventListener('blur', function() {
-          universalAttempted = true;
-          clearTimeout(universalTimer);
-        }, { once: true });
-        window.location.href = "https://maps.google.com/?action=reviewplace&placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ";
-      }
-    }, 1500);
-    window.addEventListener('blur', function() {
-      appOpened = true;
-      clearTimeout(fallbackTimer);
-    }, { once: true });
-    window.location.href = reviewLinkMaps;
-
-  } else if (isAndroid()) {
-    // Android: intent URL opens Google Maps app, falls back to browser
-    var intentURL = "intent://maps.google.com/?action=reviewplace&placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ#Intent;scheme=https;package=com.google.android.apps.maps;end";
-    window.location.href = intentURL;
-
+  if (isAndroid()) {
+    // Android: try Maps app via intent, auto-falls back to Chrome if not installed
+    window.location.href = "intent://g.page/r/CXbhLiUcv2nEEBM/review#Intent;scheme=https;package=com.google.android.apps.maps;end";
   } else {
-    // Desktop
-    window.open(reviewLink, "_blank");
+    // iOS + Desktop: g.page short link works everywhere.
+    // If Maps app is installed → opens directly inside app (already logged in).
+    // If not installed → opens Google's own review page in browser, clean UI, no login wall.
+    window.location.href = reviewLink;
   }
 }
 
@@ -775,7 +737,7 @@ async function refreshReview() {
   document.getElementById("t-hint").innerText = I18N[currentLang].hint;
 }
 
-/* ── COPY & GO (with iOS deep-link + inline install hint) ── */
+/* ── COPY & GO ── */
 function copyAndGo() {
   var btn  = document.getElementById("btnCopy");
   var dict = I18N[currentLang];
@@ -787,16 +749,6 @@ function copyAndGo() {
 
     var hintEl = document.getElementById("t-hint");
     hintEl.innerText = dict.hintCopied;
-
-    // Show gold install-link nudge on iOS only
-    if (isIOS()) {
-      hintEl.innerHTML = dict.hintCopied +
-        '<br><span style="font-size:9.5px;color:#FFD700;opacity:0.75;">' +
-        (currentLang === 'hi'
-          ? '⚠️ काम न करे तो <a href="' + mapsInstallURL + '" target="_blank" style="color:#FFD700;">Google Maps इंस्टॉल करें</a>'
-          : '⚠️ Not working? <a href="' + mapsInstallURL + '" target="_blank" style="color:#FFD700;">Install Google Maps</a>') +
-        '</span>';
-    }
 
     setTimeout(openReviewLink, 900);
   }
