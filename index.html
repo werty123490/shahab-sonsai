@@ -606,9 +606,12 @@ html, body {
 
 <script>
 /* ── TRANSLATIONS & STATE ── */
-var reviewLink = "https://search.google.com/local/writereview?placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ";
-var activeCat = "all";
-var currentLang = "en";
+var reviewLink     = "https://search.google.com/local/writereview?placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ";
+var reviewLinkMaps = "comgooglemaps://?action=reviewplace&placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ";
+var mapsInstallURL = "https://apps.apple.com/app/google-maps/id585027354";
+
+var activeCat    = "all";
+var currentLang  = "en";
 var currentReview = "";
 var _typewriterTimer = null;
 
@@ -618,7 +621,8 @@ const I18N = {
     btnWs: "Wholesale", btnPa: "Parlour", btnFm: "FMCG", btnAll: "All",
     cardLabel: "Your Review",
     btnCopy: "Copy & Post on Google", btnCopied: "Copied! Opening Google... ✓",
-    hint: "Tap to copy your review, then paste it on Google.", hintCopied: "Paste it in the review box on Google. 📱",
+    hint: "Tap to copy your review, then paste it on Google.",
+    hintCopied: "Paste it in the review box on Google. 📱 (Install Google Maps app for best experience)",
     badge: "Premium Cosmetics Wholesaler in Varanasi",
     qrTitle: "Share This Page", qrDesc: "Scan to instantly open on another device", btnQrClose: "Close"
   },
@@ -627,18 +631,73 @@ const I18N = {
     btnWs: "होलसेल", btnPa: "पार्लर", btnFm: "एफएमसीजी", btnAll: "सभी",
     cardLabel: "आपकी समीक्षा",
     btnCopy: "कॉपी करें और गूगल पर पोस्ट करें", btnCopied: "कॉपी हो गया! गूगल खुल रहा है... ✓",
-    hint: "अपनी समीक्षा कॉपी करने के लिए टैप करें, फिर गूगल पर पेस्ट करें।", hintCopied: "इसे गूगल के रिव्यू बॉक्स में पेस्ट करें। 📱",
+    hint: "अपनी समीक्षा कॉपी करने के लिए टैप करें, फिर गूगल पर पेस्ट करें।",
+    hintCopied: "इसे गूगल के रिव्यू बॉक्स में पेस्ट करें। 📱 (बेहतर अनुभव के लिए Google Maps ऐप इंस्टॉल करें)",
     badge: "वाराणसी का प्रीमियम कॉस्मेटिक्स होलसेलर",
     qrTitle: "यह पेज शेयर करें", qrDesc: "दूसरे डिवाइस पर तुरंत खोलने के लिए स्कैन करें", btnQrClose: "बंद करें"
   }
 };
 
-/* ── UI LOGIC & API FETCH ── */
+/* ── DEVICE DETECTION ── */
+function isIOS() {
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+}
+function isAndroid() {
+  return /Android/.test(navigator.userAgent);
+}
+
+/* ── OPEN REVIEW LINK (4-layer iOS fallback) ── */
+function openReviewLink() {
+  if (isIOS()) {
+    // Layer 1: native Google Maps deep link
+    var appOpened = false;
+    var fallbackTimer = setTimeout(function() {
+      if (!appOpened) {
+        // Layer 2: maps.google.com universal link
+        var universalAttempted = false;
+        var universalTimer = setTimeout(function() {
+          if (!universalAttempted) {
+            // Layer 3: Chrome iOS scheme
+            var chromeFallTimer = setTimeout(function() {
+              // Layer 4: plain Safari
+              window.location.href = reviewLink;
+            }, 1200);
+            window.addEventListener('blur', function() {
+              clearTimeout(chromeFallTimer);
+            }, { once: true });
+            window.location.href = "googlechrome://search.google.com/local/writereview?placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ";
+          }
+        }, 1200);
+        window.addEventListener('blur', function() {
+          universalAttempted = true;
+          clearTimeout(universalTimer);
+        }, { once: true });
+        window.location.href = "https://maps.google.com/?action=reviewplace&placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ";
+      }
+    }, 1500);
+    window.addEventListener('blur', function() {
+      appOpened = true;
+      clearTimeout(fallbackTimer);
+    }, { once: true });
+    window.location.href = reviewLinkMaps;
+
+  } else if (isAndroid()) {
+    // Android: intent URL opens Google Maps app, falls back to browser
+    var intentURL = "intent://maps.google.com/?action=reviewplace&placeid=ChIJ33FO3R8vjjkRduEuJRy_acQ#Intent;scheme=https;package=com.google.android.apps.maps;end";
+    window.location.href = intentURL;
+
+  } else {
+    // Desktop
+    window.open(reviewLink, "_blank");
+  }
+}
+
+/* ── UI LOGIC ── */
 function setLanguage(lang) {
   currentLang = lang;
   document.getElementById("langEn").classList.toggle("active", lang === "en");
   document.getElementById("langHi").classList.toggle("active", lang === "hi");
-  
+
   var dict = I18N[lang];
   document.getElementById("t-starsLabel").innerText = dict.starsLabel;
   document.getElementById("t-btnWs").innerText = dict.btnWs;
@@ -654,7 +713,7 @@ function setLanguage(lang) {
   document.getElementById("t-btnQrClose").innerText = dict.btnQrClose;
 
   document.getElementById("btnCopy").classList.remove("success");
-  
+
   refreshReview();
 }
 
@@ -681,7 +740,7 @@ function displayReview(text) {
   if (_typewriterTimer !== null) { clearTimeout(_typewriterTimer); _typewriterTimer = null; }
   currentReview = text;
   el.textContent = "";
-  
+
   var i = 0;
   function typeWriter() {
     if (i < text.length) {
@@ -716,16 +775,30 @@ async function refreshReview() {
   document.getElementById("t-hint").innerText = I18N[currentLang].hint;
 }
 
+/* ── COPY & GO (with iOS deep-link + inline install hint) ── */
 function copyAndGo() {
-  var btn = document.getElementById("btnCopy");
+  var btn  = document.getElementById("btnCopy");
   var dict = I18N[currentLang];
   if (window.triggerBurst) window.triggerBurst();
 
   function afterCopy() {
     btn.innerText = dict.btnCopied;
     btn.classList.add("success");
-    document.getElementById("t-hint").innerText = dict.hintCopied;
-    setTimeout(function() { window.open(reviewLink, "_blank"); }, 900);
+
+    var hintEl = document.getElementById("t-hint");
+    hintEl.innerText = dict.hintCopied;
+
+    // Show gold install-link nudge on iOS only
+    if (isIOS()) {
+      hintEl.innerHTML = dict.hintCopied +
+        '<br><span style="font-size:9.5px;color:#FFD700;opacity:0.75;">' +
+        (currentLang === 'hi'
+          ? '⚠️ काम न करे तो <a href="' + mapsInstallURL + '" target="_blank" style="color:#FFD700;">Google Maps इंस्टॉल करें</a>'
+          : '⚠️ Not working? <a href="' + mapsInstallURL + '" target="_blank" style="color:#FFD700;">Install Google Maps</a>') +
+        '</span>';
+    }
+
+    setTimeout(openReviewLink, 900);
   }
 
   if (navigator.clipboard && navigator.clipboard.writeText) {
@@ -805,10 +878,7 @@ function closeQR() { document.getElementById('qrOverlay').classList.remove('acti
   Particle.prototype.reset = function(init) {
     this.x = Math.random() * W;
     this.y = init ? Math.random() * H : H + 20;
-    
-    // 0 = Gold Dust, 1 = Blush Cloud (No more 4-pointed stars)
-    this.type = Math.floor(Math.random() * 2); 
-    
+    this.type = Math.floor(Math.random() * 2);
     if (this.type === 0) {
       this.r = Math.random() * 1.5 + 0.5;
       this.speed = 0.003 + Math.random() * 0.005;
@@ -816,7 +886,6 @@ function closeQR() { document.getElementById('qrOverlay').classList.remove('acti
       this.r = Math.random() * 25 + 10;
       this.speed = 0.001 + Math.random() * 0.002;
     }
-    
     this.vx = (Math.random() - 0.5) * 0.2;
     this.vy = -(Math.random() * 0.3 + 0.1);
     this.life = Math.random() * Math.PI;
@@ -829,7 +898,7 @@ function closeQR() { document.getElementById('qrOverlay').classList.remove('acti
     particles.forEach(p => {
       p.vy = -(Math.random() * 3 + 1.5);
       p.vx = (Math.random() - 0.5) * 4;
-      if(p.type !== 1) p.r = Math.random() * 3 + 1.5;
+      if (p.type !== 1) p.r = Math.random() * 3 + 1.5;
     });
   };
 
@@ -838,10 +907,8 @@ function closeQR() { document.getElementById('qrOverlay').classList.remove('acti
     particles.forEach(p => {
       p.x += p.vx; p.y += p.vy; p.life += p.speed;
       if (p.y < -30) { p.reset(false); return; }
-      
       var alpha = Math.sin(p.life);
       if (alpha < 0) { p.reset(false); return; }
-
       ctx.beginPath();
       if (p.type === 0) {
         ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
